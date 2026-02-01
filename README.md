@@ -82,13 +82,13 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ### Table Settings
 * Window Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out to fit your screen.
 * Table Length: Adjusts the physical length of the board from 9 feet to 22 feet.
-* Puck Size: Cycles between Large (2 5/16 inches) and Medium (2 1/8 inches).
+* Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
-* Game Goal: Toggle between playing a game to 15 or 21 points.
-* Hangers Rule: Toggle scoring for pucks hanging off the edge between 4 points and 3 points.
+* Game Goal: Toggles between playing a game to 15 or 21 points.
+* Hangers Rule: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
-* The two wooden tables in the center allow you to choose puck colors. 
+* The two tables in the center allow you to choose puck colors. 
 * The top table is for Player 1 (scoreboard left), and the bottom table is for Player 2 (scoreboard right).
 * Tip: You can practice throwing pucks on these mini-tables to test the friction!
 
