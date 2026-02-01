@@ -37,18 +37,18 @@ Note: You only need to do this the first time. Afterwards, you can just click on
 * A puck can only enter the foul and scoring areas and interact with pucks on the table if it has been thrown from the throwing area with momentum on your turn.
 
 ### Board Layout
-The table is divided into specific areas marked by colored lines:
+The table is divided into specific areas marked by colored lines: 
 * **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the board.
 * **Throwing Area:** The zone to the left of the **dotted blue line**. You must release your throw before your cursor crosses this line.
-* **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is considered a foul and will be returned to the gutter.
-    * *Exception:* On a 9-foot table, there is no foul area; the scoring zone begins immediately after the throw line.
-* **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must cross this line to remain on the board and be eligible for points.
+* **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is a foul and will be returned to the gutter.
+    * *Exception:* On a 9-foot table, there is no foul area. The scoring zone begins immediately after the throw line.
+* **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the board and count towards points for the round.
 
 ### Objective
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the board to prevent them from scoring.
 
 ### Scoring
-Points are awarded based on where the pucks lie at the end of a round. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
+Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
 
 * **1 Point:** Closest zone.
 * **2 Points:** Middle zone.
