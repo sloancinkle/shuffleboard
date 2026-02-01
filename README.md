@@ -16,11 +16,11 @@ Because this application is not signed by Apple, you will need to bypass the sec
 
 1. Download the .zip file from the link above and unzip it.
 2. Right-click (or Control-click) the Shuffleboard app icon and select Open.
-3. A warning dialog will appear. Click Open (or "Open Anyway").
-4. If prompted, open your Mac's System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway next to the Shuffleboard notification.
+3. A warning dialog will appear. Click Close.
+4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway (see screenshot).
 5. Enter your user password if prompted.
 
-Note: You only need to do this the first time. Afterwards, you can double-click the app to run it.
+Note: You only need to do this the first time. Afterwards, you can just click on the app to run it.
 
 ![Game Screenshot](screenshots/install.png)
 
@@ -65,15 +65,17 @@ The digital scoreboard tracks the game state in real-time.
 
 ![Scoreboard Screenshot](screenshots/scoreboard.png)
 
-* Main Score: The total accumulated score for the game.
-* Turn Indicator: Indicates whose turn it is to throw.
-* Round Score: Shows how many points would be added to your main score if the round ended. This updates instantly as pucks move.
-* Throws Remaining: The dashes at the bottom represent your pucks. Each player gets 4 throws per round.
+* Main Score: Large numbers show the total accumulated score for the game.
+* Turn Indicator: White dot indicates whose turn it is to throw.
+* Round Score: Small numbers show how many points would be added to your main score if the round ended. This updates instantly as pucks move.
+* Throws Remaining: Dashes represent your pucks. Each player gets 4 throws per round.
 
 ---
 
 ## Game Options & Settings
-Click the Menu Icon (top right) to open the Options Screen.
+Click the Replay Icon on the top right corner to start a new game, replacing the pucks in the left side gutter and resetting the scoreboard.
+
+Click the Menu Icon on the top right corner to open the Options Screen.
 
 ![Options Screenshot](screenshots/options.png)
 
