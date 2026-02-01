@@ -12,7 +12,7 @@ A physics-based 2-player table shuffleboard game built for macOS.
 ---
 
 ## Installation Instructions
-Because this application is not signed by Apple, you will need to bypass the security check once upon first launch.
+Because this application is not signed by Apple, you will need to bypass the security check on first launch.
 
 1. Download the .zip file from the link above and unzip it.
 2. Right-click (or Control-click) the Shuffleboard app icon and select Open.
