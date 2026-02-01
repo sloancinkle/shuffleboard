@@ -6,12 +6,17 @@ A physics-based 2-player table shuffleboard game built for macOS and Windows.
 
 ## Download
 
-* [**Download Shuffleboard for Mac (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link#)
 * [**Download Shuffleboard for Windows (Google Drive)**](https://drive.google.com/file/d/1MBFXPT7wwIOmyzQk7IHpd-XPYTnwQ20O/view?usp=sharing)
+* [**Download Shuffleboard for MacOS (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link#)
 
 ---
 
 ## Installation Instructions
+
+### Windows
+1. Download the Windows .zip file and unzip it.
+2. Open the folder and double-click Shuffleboard.exe.
+3. If Windows Defender pops up and prevents the app from starting, click More Info, then click Run Anyway.
 
 ### macOS
 Because this application is not signed by Apple, you will need to bypass the security check on first launch.
@@ -23,13 +28,6 @@ Because this application is not signed by Apple, you will need to bypass the sec
 5. Enter your user password if prompted.
 
 Note: You only need to do this the first time. Afterwards, you can just click on the app to run it.
-
-### Windows
-1. Download the Windows .zip file and unzip it.
-2. Open the folder and double-click Shuffleboard.exe.
-3. If Windows Defender ("SmartScreen") pops up preventing the app from starting:
-    * Click "More info".
-    * Click "Run anyway".
 
 ---
 
