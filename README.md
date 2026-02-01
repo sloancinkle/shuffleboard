@@ -86,8 +86,9 @@ Click the Menu Icon (top right) to open the Options Screen.
 * Hangers Rule: Toggle scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
-* Color Selection: The two wooden tables on the right allow you to choose puck colors. The top area is for Player 1 (scoreboard left), and the bottom area is for Player 2 (scoreboard right).
-    * Tip: You can practice throwing pucks on these mini-tables to test the friction!
+* The two wooden tables in the center allow you to choose puck colors. 
+* The top area is for Player 1 (scoreboard left), and the bottom area is for Player 2 (scoreboard right).
+* Tip: You can practice throwing pucks on these mini-tables to test the friction!
 
 ### Resume vs. Reset
 * RESUME: Returns you to the current game without changes.
