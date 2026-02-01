@@ -80,7 +80,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ![Options Screenshot](screenshots/options.png)
 
 ### Table Settings
-* Window Size: Increases or decreases the PPI (Pixels Per Inch), effectively zooming the game window in or out to fit your screen.
+* Window Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out to fit your screen.
 * Table Length: Adjusts the physical length of the board from 9 feet to 22 feet.
 * Puck Size: Cycles between Large (2 5/16 inches) and Medium (2 1/8 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
