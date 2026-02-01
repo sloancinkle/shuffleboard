@@ -39,7 +39,7 @@ Note: You only need to do this the first time. Afterwards, you can just click on
 ### Board Layout
 The table is divided into specific areas marked by colored lines:
 * **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the board.
-* **Throwing Area:** The zone to the left of the **spotted blue line**. You must release your throw before your cursor crosses this line.
+* **Throwing Area:** The zone to the left of the **dotted blue line**. You must release your throw before your cursor crosses this line.
 * **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is considered a foul and will be returned to the gutter.
     * *Exception:* On a 9-foot table, there is no foul area; the scoring zone begins immediately after the throw line.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must cross this line to remain on the board and be eligible for points.
