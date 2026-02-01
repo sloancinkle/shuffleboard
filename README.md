@@ -72,7 +72,7 @@ The digital scoreboard tracks the game state in real-time.
 ---
 
 ## Game Options & Settings
-Click the Replay Icon on the top right corner to start a new game, replacing the pucks in the left side gutter and resetting the scoreboard.
+Click the Replay Icon on the top right corner to start a new game, resetting the puck positions and scoreboard.
 
 Click the Menu Icon on the top right corner to open the Options Screen.
 
@@ -93,7 +93,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ### Resume vs. Reset
 * RESUME: Returns you to the current game without changes.
-* RESET: If you change a setting that affects gameplay (Table Length, Puck Size, Rules), the button will change to RESET. Clicking this will apply changes and start a new match.
+* RESET: If you change a setting that affects gameplay (table length, puck size, score goal, or hanging points), the button will change to RESET. Clicking this will apply changes and start a new game by resetting the puck positions and scoreboard.
 
 ---
 
