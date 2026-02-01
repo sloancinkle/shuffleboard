@@ -58,6 +58,8 @@ Only the player with the furthest puck scores points for the round. They receive
 
 The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. 
 
+The first player to reach 21 points, or optionally 15 points, wins the game\. 
+
 ---
 
 ## The Scoreboard
@@ -84,7 +86,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 * Table Length: Adjusts the physical length of the board from 9 feet to 22 feet.
 * Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
-* Game Goal: Toggles between playing a game to 15 or 21 points.
+* Game Goal: Toggles between playing a game to 21 or 15 points.
 * Hanging Rule: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
