@@ -102,7 +102,7 @@ The game automatically saves your progress (score, puck positions, current turn)
 
 When does it save?
 * When you click the 'X' button to close the window.
-* When you press 'Start/Resume' in the menu.
+* When you press 'RESUME/RESET' in the menu.
 
 Warning:
 If you force quit the app using Command+Q, the game will not save the current state. Close the window using the red 'X' button to ensure your game is saved.
