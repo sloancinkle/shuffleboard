@@ -7,7 +7,7 @@ A physics-based 2-player table shuffleboard game built for macOS and Windows.
 ## Download
 
 * [**Download Shuffleboard for Mac (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link#)
-* **Download for Windows coming soon**
+* [**Download Shuffleboard for Windows (Google Drive)**](https://drive.google.com/file/d/1MBFXPT7wwIOmyzQk7IHpd-XPYTnwQ20O/view?usp=sharing)
 
 ---
 
