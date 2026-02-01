@@ -53,7 +53,7 @@ Points are awarded based on where the pucks lie at the end of a round. Only the 
 * **1 Point:** Closest zone.
 * **2 Points:** Middle zone.
 * **3 Points:** Furthest zone.
-* **4 Points (Optional):** A puck hanging partially off the back edge of the table.
+* **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
 
 The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. The first player to reach 21 points, or optionally 15 points, wins the game. 
 
