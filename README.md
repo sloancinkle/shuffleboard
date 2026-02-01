@@ -1,6 +1,6 @@
 # Shuffleboard
 
-A realistic, physics-based 2-player table shuffleboard game built for macOS.
+A physics-based 2-player table shuffleboard game built for macOS.
 
 ![Game Screenshot](screenshots/gameplay.png)
 
