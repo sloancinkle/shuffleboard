@@ -33,7 +33,7 @@ Note: You only need to do this the first time. Afterwards, you can double-click 
 2. **Throw:** Drag the mouse forward quickly and release the click while inside the throwing area area to launch the puck.
 
 * You can release a puck in the gutter or throwing area with no momentum to drop it. 
-* You can use a puck in hand to push and rearrange other pucks in the gutter and throwing trea.
+* You can use a puck in hand to push and rearrange other pucks in the gutter and throwing area.
 * A puck can only enter the foul and scoring areas and interact with pucks on the table if it has been thrown from the throwing area with momentum on your turn.
 
 ### Board Layout
@@ -54,7 +54,9 @@ Points are awarded based on where the puck stops:
 * **3 Points:** Furthest zone.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the board.
 
-Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck.
+Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
+
+The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. 
 
 ---
 
