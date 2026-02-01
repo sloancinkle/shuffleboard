@@ -87,7 +87,7 @@ Click the Menu Icon (top right) to open the Options Screen.
 
 ### Player Customization
 * The two wooden tables in the center allow you to choose puck colors. 
-* The top area is for Player 1 (scoreboard left), and the bottom area is for Player 2 (scoreboard right).
+* The top table is for Player 1 (scoreboard left), and the bottom table is for Player 2 (scoreboard right).
 * Tip: You can practice throwing pucks on these mini-tables to test the friction!
 
 ### Resume vs. Reset
