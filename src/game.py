@@ -21,7 +21,10 @@ from .constants import REAL_BOARD_WIDTH, FPS, WOOD_DARK, WHITE, GREY, BLACK, \
 
 def resource_path(relative_path):
     try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
+        # The build command puts assets in a subfolder named 'assets', so we must point there.
+        base_path = os.path.join(base_path, 'assets')
     except Exception:
         base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'assets'))
     return os.path.join(base_path, relative_path)
@@ -61,6 +64,7 @@ class Shuffleboard:
             
             self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
             self.scoreboard = Scoreboard()
+            self.scoreboard.reset() # Ensure fresh start on load if needed, or rely on loaded scores
             self.gutter = Gutter(self.puck_size)
             self.input = InputHandler()
             self.menu = Options(self.board_length_ft, self.puck_size)
@@ -155,6 +159,7 @@ class Shuffleboard:
             image.blit(color_surf, (0, 0), special_flags=pygame.BLEND_ADD)
             return image
         except FileNotFoundError:
+            # Fallback to colored rect if icon fails
             fallback = pygame.Surface(size, pygame.SRCALPHA)
             pygame.draw.rect(fallback, color, (0,0,size[0],size[1]))
             return fallback
@@ -336,9 +341,6 @@ class Shuffleboard:
                     valid_states = [STATE_THROWN, STATE_ON_BOARD, STATE_READY, STATE_SELECTED]
                     if p1.state in valid_states and p2.state in valid_states:
                         
-                        # --- STRICT Z-AXIS SEPARATION ---
-                        # If one puck is held (Selected) and the other is already scored (On Board),
-                        # they effectively exist on different Z-planes and cannot collide.
                         if p1.state == STATE_SELECTED and p2.state == STATE_ON_BOARD: continue
                         if p2.state == STATE_SELECTED and p1.state == STATE_ON_BOARD: continue
                         
