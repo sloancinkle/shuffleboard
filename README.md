@@ -39,18 +39,18 @@ Note: You only need to do this the first time. Afterwards, you can just click on
 
 * You can release a puck in the gutter or throwing area with no momentum to drop it.
 * You can use a puck in hand to push and rearrange other pucks in the gutter and throwing area.
-* A puck can only enter the foul and scoring areas and interact with pucks on the table if it has been thrown from the throwing area with momentum on your turn.
+* A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
 
 ### Board Layout
-The table is divided into specific areas marked by colored lines: 
-* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the board.
+The board is divided into specific areas divided by color and colored lines: 
+* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the table.
 * **Throwing Area:** The zone to the left of the **dotted blue line**. You must release your throw before your cursor crosses this line.
 * **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is a foul and will be returned to the gutter.
     * *Exception:* On a 9-foot table, there is no foul area. The throwing and scoring areas are separated by a **solid red line**.
-* **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the board and count towards points for the round.
+* **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
 ### Objective
-The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the board to prevent them from scoring.
+The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the table to prevent them from scoring.
 
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
 
@@ -84,7 +84,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ### Table Settings
 * Window Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out to fit your screen.
-* Table Length: Adjusts the physical length of the board from 9 feet to 22 feet.
+* Table Length: Adjusts the physical length of the table from 9 feet to 22 feet.
 * Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
 * Score Goal: Toggles between playing a game to 21 or 15 points.
@@ -103,11 +103,6 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ## Saving & Memory
 The game automatically saves your progress (score, puck positions, current turn) and your settings preferences.
-
-When does it save?
-* Automatically after every throw when all pucks stop moving.
-* When you click the 'X' button to close the window.
-* When you press 'RESUME/RESET' in the menu.
 
 Warning:
 If you force quit the app using Command+Q (Mac) or Alt+F4 (Windows), the game may not save the current state. Close the window using the 'X' button to ensure your game is saved.
@@ -131,4 +126,4 @@ To reset everything to default (delete your save):
 
 Found a bug or have a suggestion? Send me an email at **sloan@cinkle.com**.
 
-If you loved the game and want to buy me a coffee, you can find me on Venmo or CashApp at **@sloancinkle**.
+If you loved the game and want to buy me a coffee, find me on Venmo or CashApp at **@sloancinkle**.
