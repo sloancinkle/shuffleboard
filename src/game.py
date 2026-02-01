@@ -21,9 +21,7 @@ from .constants import REAL_BOARD_WIDTH, FPS, WOOD_DARK, WHITE, GREY, BLACK, \
 
 def resource_path(relative_path):
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
-        # The build command puts assets in a subfolder named 'assets', so we must point there.
         base_path = os.path.join(base_path, 'assets')
     except Exception:
         base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'assets'))
@@ -64,7 +62,7 @@ class Shuffleboard:
             
             self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
             self.scoreboard = Scoreboard()
-            self.scoreboard.reset() # Ensure fresh start on load if needed, or rely on loaded scores
+            self.scoreboard.reset()
             self.gutter = Gutter(self.puck_size)
             self.input = InputHandler()
             self.menu = Options(self.board_length_ft, self.puck_size)
@@ -103,6 +101,12 @@ class Shuffleboard:
                 new_puck.x_in = p_data["x_in"]
                 new_puck.y_in = p_data["y_in"]
                 new_puck.state = p_data["state"]
+                
+                # --- NEW: Restore Momentum ---
+                new_puck.dx = p_data.get("dx", 0)
+                new_puck.dy = p_data.get("dy", 0)
+                new_puck.is_moving = p_data.get("is_moving", False)
+                
                 self.gutter.add_puck(new_puck)
 
         else:
@@ -159,7 +163,6 @@ class Shuffleboard:
             image.blit(color_surf, (0, 0), special_flags=pygame.BLEND_ADD)
             return image
         except FileNotFoundError:
-            # Fallback to colored rect if icon fails
             fallback = pygame.Surface(size, pygame.SRCALPHA)
             pygame.draw.rect(fallback, color, (0,0,size[0],size[1]))
             return fallback
@@ -381,6 +384,9 @@ class Shuffleboard:
                 next_turn = P2 if self.current_turn == P1 else P1
                 if self.throws_left[next_turn] > 0: self.current_turn = next_turn
             self.game_state = "AIMING"
+        
+        # --- NEW: Trigger auto-save when all movement stops ---
+        memory.save_memory(self)
 
     def draw(self):
         if self.state == "MENU":

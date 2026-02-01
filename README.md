@@ -1,28 +1,35 @@
 # Shuffleboard
 
-A physics-based 2-player table shuffleboard game built for macOS.
+A physics-based 2-player table shuffleboard game built for macOS and Windows.
 
 ![Game Screenshot](screenshots/starting.png)
 
 ## Download
-**Currently available for macOS only.**
 
-[**Download Shuffleboard for Mac (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link#)
+* [**Download Shuffleboard for Mac (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link#)
+* **Download for Windows coming soon**
 
 ---
 
 ## Installation Instructions
+
+### macOS
 Because this application is not signed by Apple, you will need to bypass the security check on first launch.
 
 1. Download the .zip file from the link above and unzip it.
 2. Right-click (or Control-click) the Shuffleboard app icon and select Open.
 3. A warning dialog will appear. Click Close.
-4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway (see screenshot).
+4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway.
 5. Enter your user password if prompted.
 
 Note: You only need to do this the first time. Afterwards, you can just click on the app to run it.
 
-![Game Screenshot](screenshots/install.png)
+### Windows
+1. Download the Windows .zip file and unzip it.
+2. Open the folder and double-click Shuffleboard.exe.
+3. If Windows Defender ("SmartScreen") pops up preventing the app from starting:
+    * Click "More info".
+    * Click "Run anyway".
 
 ---
 
@@ -30,9 +37,9 @@ Note: You only need to do this the first time. Afterwards, you can just click on
 
 ### Controls & Mechanics
 1. **Grab:** On your turn, hover your mouse over one of your colored pucks, then click and hold to grab it.
-2. **Throw:** Drag the mouse quickly and release the click inside the throwing area area to launch the puck.
+2. **Throw:** Drag the mouse quickly and release the click inside the throwing area to launch the puck.
 
-* You can release a puck in the gutter or throwing area with no momentum to drop it. 
+* You can release a puck in the gutter or throwing area with no momentum to drop it.
 * You can use a puck in hand to push and rearrange other pucks in the gutter and throwing area.
 * A puck can only enter the foul and scoring areas and interact with pucks on the table if it has been thrown from the throwing area with momentum on your turn.
 
@@ -47,7 +54,6 @@ The table is divided into specific areas marked by colored lines:
 ### Objective
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the board to prevent them from scoring.
 
-### Scoring
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
 
 * **1 Point:** Closest zone.
@@ -83,8 +89,8 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 * Table Length: Adjusts the physical length of the board from 9 feet to 22 feet.
 * Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
-* Game Goal: Toggles between playing a game to 21 or 15 points.
-* Hanging Rule: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
+* Score Goal: Toggles between playing a game to 21 or 15 points.
+* Hanging Points: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
 * The two tables in the center allow you to choose puck colors. 
@@ -101,18 +107,22 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 The game automatically saves your progress (score, puck positions, current turn) and your settings preferences.
 
 When does it save?
+* Automatically after every throw when all pucks stop moving.
 * When you click the 'X' button to close the window.
 * When you press 'RESUME/RESET' in the menu.
 
 Warning:
-If you force quit the app using Command+Q, the game will not save the current state. Close the window using the red 'X' button to ensure your game is saved.
+If you force quit the app using Command+Q (Mac) or Alt+F4 (Windows), the game may not save the current state. Close the window using the 'X' button to ensure your game is saved.
 
 ### Managing Save Data
-The save file is located securely in your Mac's Application Support folder:
+The save file is located in your computer's application data folder.
+
+**Mac:**
 ~/Library/Application Support/Shuffleboard/memory.json
 
+**Windows:**
+%APPDATA%\Shuffleboard\memory.json
+
 To reset everything to default (delete your save):
-1. Open Finder.
-2. Press Cmd + Shift + G.
-3. Paste: ~/Library/Application Support/Shuffleboard/
-4. Delete memory.json.
+1. Navigate to the folder listed above.
+2. Delete memory.json.
