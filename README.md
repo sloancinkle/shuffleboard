@@ -29,8 +29,8 @@ Note: You only need to do this the first time. Afterwards, you can just click on
 ## How to Play
 
 ### Controls & Mechanics
-1. **Grab:** On your turn, hover your mouse over one of your colored pucks in the gutter, then click and hold to grab it.
-2. **Throw:** Drag the mouse forward quickly and release the click while inside the throwing area area to launch the puck.
+1. **Grab:** On your turn, hover your mouse over one of your colored pucks, then click and hold to grab it.
+2. **Throw:** Drag the mouse quickly and release the click inside the throwing area area to launch the puck.
 
 * You can release a puck in the gutter or throwing area with no momentum to drop it. 
 * You can use a puck in hand to push and rearrange other pucks in the gutter and throwing area.
