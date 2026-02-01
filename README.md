@@ -48,17 +48,14 @@ The table is divided into specific areas marked by colored lines:
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the board to prevent them from scoring.
 
 ### Scoring
-Points are awarded based on where the puck stops:
+Points are awarded based on where the pucks lie at the end of a round. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
+
 * **1 Point:** Closest zone.
 * **2 Points:** Middle zone.
 * **3 Points:** Furthest zone.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the board.
 
-Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
-
-The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. 
-
-The first player to reach 21 points, or optionally 15 points, wins the game\. 
+The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. The first player to reach 21 points, or optionally 15 points, wins the game. 
 
 ---
 
