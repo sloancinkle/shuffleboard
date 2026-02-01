@@ -51,7 +51,6 @@ class Shuffleboard:
         
         saved_data = memory.load_memory()
         
-        # --- FIX: Check for "gameplay" key to ensure save file is compatible ---
         valid_save = False
         if saved_data and "gameplay" in saved_data and "settings" in saved_data:
             valid_save = True
@@ -240,6 +239,8 @@ class Shuffleboard:
                     self.board_length_ft = int(self.menu.length)
                     self.puck_size = self.menu.puck_size
                     self.scoreboard.reset()
+                    # --- FIX: Force P1 start when settings change ---
+                    self.round_winner = P1
                     self.start_new_round()
                 else:
                     self._update_all_pucks_visuals()
@@ -291,6 +292,7 @@ class Shuffleboard:
 
     def reset_game(self):
         self.scoreboard.reset()
+        # --- FIX: Force P1 start on manual reset ---
         self.round_winner = P1
         self.start_new_round()
 

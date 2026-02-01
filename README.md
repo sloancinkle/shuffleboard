@@ -86,7 +86,6 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 * Window Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out to fit your screen.
 * Table Length: Adjusts the physical length of the table from 9 feet to 22 feet.
 * Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
-    * The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
 * Score Goal: Toggles between playing a game to 21 or 15 points.
 * Hanging Points: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 
