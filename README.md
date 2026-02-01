@@ -2,7 +2,7 @@
 
 A physics-based 2-player table shuffleboard game built for macOS.
 
-![Game Screenshot](screenshots/gameplay.png)
+![Game Screenshot](screenshots/starting.png)
 
 ## Download
 **Currently available for macOS only.**
