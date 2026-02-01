@@ -29,12 +29,12 @@ Note: You only need to do this the first time. Afterwards, you can double-click 
 ## How to Play
 
 ### Controls & Mechanics
-1. **Grab:** On your turn, hover your mouse over one of your colored pucks in the gutter area, then click and hold to grab it.
-2. **Throw:** Drag the mouse forward quickly and release the click while inside the Throwing Area area to launch the puck.
+1. **Grab:** On your turn, hover your mouse over one of your colored pucks in the gutter, then click and hold to grab it.
+2. **Throw:** Drag the mouse forward quickly and release the click while inside the throwing area area to launch the puck.
 
-* You can release a puck in the Gutter or Throwing Area with no momentum to drop it. 
-* You can use a puck in hand to push and rearrange other pucks in the Gutter and Throwing Area.
-* A puck can only enter the Foul and Scoring Areas and interact with pucks on the table if it has been validly thrown from the throwing area with momentum on your turn.
+* You can release a puck in the gutter or throwing area with no momentum to drop it. 
+* You can use a puck in hand to push and rearrange other pucks in the gutter and throwing trea.
+* A puck can only enter the foul and scoring areas and interact with pucks on the table if it has been thrown from the throwing area with momentum on your turn.
 
 ### Board Layout
 The table is divided into specific areas marked by colored lines:
@@ -52,7 +52,7 @@ Points are awarded based on where the puck stops:
 * **1 Point:** Closest zone.
 * **2 Points:** Middle zone.
 * **3 Points:** Furthest zone.
-* **4 Points (Optional):** A "Hanger" — a puck hanging partially off the back edge of the board.
+* **4 Points (Optional):** A puck hanging partially off the back edge of the board.
 
 Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck.
 
