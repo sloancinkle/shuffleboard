@@ -85,7 +85,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 * Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
 * Game Goal: Toggles between playing a game to 15 or 21 points.
-* Hangers Rule: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
+* Hanging Rule: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
 * The two tables in the center allow you to choose puck colors. 
