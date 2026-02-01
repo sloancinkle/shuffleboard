@@ -124,3 +124,11 @@ The save file is located in your computer's application data folder.
 To reset everything to default (delete your save):
 1. Navigate to the folder listed above.
 2. Delete memory.json.
+
+---
+
+## Feedback & Support
+
+Found a bug or have a suggestion? Send me an email at **sloan@cinkle.com**.
+
+If you loved the game and want to buy me a coffee, you can find me on Venmo or CashApp at **@sloancinkle**.
