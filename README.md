@@ -38,9 +38,10 @@ Note: You only need to do this the first time. Afterwards, you can double-click 
 
 ### Board Layout
 The table is divided into specific areas marked by colored lines:
+* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the board.
 * **Throwing Area:** The zone to the left of the **spotted blue line**. You must release your throw before your cursor crosses this line.
-* **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line will be returned to the gutter.
-    * On a 9-foot table, there is no Foul Area.
+* **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is considered a foul and will be returned to the gutter.
+    * *Exception:* On a 9-foot table, there is no foul area; the scoring zone begins immediately after the throw line.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must cross this line to remain on the board and be eligible for points.
 
 ### Objective
@@ -80,7 +81,7 @@ Click the Menu Icon (top right) to open the Options Screen.
 * Puck Size: Cycles between Large (2 5/16 inches) and Medium (2 1/8 inches).
     * Note: The game automatically defaults to Medium for tables less than 15 feet and Large for tables 15 feet and over, but you can override this manually.
 * Game Goal: Toggle between playing a game to 15 or 21 points.
-* Hangers Rule: Toggle scoring for "Hangers" (pucks hanging off the edge) between 4 points and 3 points.
+* Hangers Rule: Toggle scoring for pucks hanging off the edge between 4 points and 3 points.
 
 ### Player Customization
 * Color Selection: The two wooden tables on the right allow you to choose puck colors. The top area is for Player 1 (scoreboard left), and the bottom area is for Player 2 (scoreboard right).
@@ -99,7 +100,7 @@ When does it save?
 * When you click the 'X' button to close the window.
 * When you press 'Start/Resume' in the menu.
 
-Important Warning:
+Warning:
 If you force quit the app using Command+Q, the game will not save the current state. Close the window using the red 'X' button to ensure your game is saved.
 
 ### Managing Save Data
