@@ -66,9 +66,9 @@ The digital scoreboard tracks the game state in real-time.
 ![Scoreboard Screenshot](screenshots/scoreboard.png)
 
 * Main Score: Large numbers show the total accumulated score for the game.
-* Turn Indicator: White dot indicates whose turn it is to throw.
-* Round Score: Small numbers show how many points would be added to your main score if the round ended. This updates instantly as pucks move.
-* Throws Remaining: Dashes represent your pucks. Each player gets 4 throws per round.
+* Turn Indicator: The white dot indicates whose turn it is to throw.
+* Round Score: Small numbers show how many points would be added to your main score if the round ended now. This updates instantly as pucks move.
+* Throws Remaining: The dashes at the bottom represent your pucks. Each player gets 4 throws per round.
 
 ---
 
