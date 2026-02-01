@@ -51,7 +51,12 @@ class Shuffleboard:
         
         saved_data = memory.load_memory()
         
-        if saved_data:
+        # --- FIX: Check for "gameplay" key to ensure save file is compatible ---
+        valid_save = False
+        if saved_data and "gameplay" in saved_data and "settings" in saved_data:
+            valid_save = True
+
+        if valid_save:
             s = saved_data["settings"]
             self.board_length_ft = s["length"]
             self.puck_size = s["puck_size"]
@@ -102,7 +107,6 @@ class Shuffleboard:
                 new_puck.y_in = p_data["y_in"]
                 new_puck.state = p_data["state"]
                 
-                # --- NEW: Restore Momentum ---
                 new_puck.dx = p_data.get("dx", 0)
                 new_puck.dy = p_data.get("dy", 0)
                 new_puck.is_moving = p_data.get("is_moving", False)
@@ -385,7 +389,6 @@ class Shuffleboard:
                 if self.throws_left[next_turn] > 0: self.current_turn = next_turn
             self.game_state = "AIMING"
         
-        # --- NEW: Trigger auto-save when all movement stops ---
         memory.save_memory(self)
 
     def draw(self):
