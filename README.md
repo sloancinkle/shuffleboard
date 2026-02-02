@@ -40,14 +40,13 @@ You only need to do this the first time. Afterwards, you can just click on the a
 2. **Throw:** Drag the mouse quickly and release the click inside the throwing area to launch the puck.
 
 * You can release a puck in the gutter or throwing area with no momentum to drop it.
-* You can use a puck in hand to push and rearrange other pucks in the gutter and throwing area.
 * A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
 
 ### Board Layout
 The board is divided into specific areas divided by color and colored lines: 
 * **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the table. You can throw pucks in here freely.
 * **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from this area to take your turn.
-* **Foul Area:** The entire zone to the left of the **solid red line**. At the start of each turn, any puck that has not crossed the red line is returned to the gutter.
+* **Foul Area:** The entire area to the left of the **solid red line**. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
 ### Objective
@@ -55,7 +54,7 @@ The goal is to slide your pucks into the numbered zones at the opposite end of t
 
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
 
-* **1 Point:** Closest zone.
+* **1 Point:** Closest and largest zone.
 * **2 Points:** Middle zone.
 * **3 Points:** Furthest zone.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
