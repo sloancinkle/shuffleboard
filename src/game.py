@@ -145,16 +145,22 @@ class Shuffleboard:
         icon_dim = constants.ICON_SIZE_PX
         self.icon_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
         self.reset_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
+        self.puck_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
         
         self.icons = {
             'menu_grey': self.load_colored_icon(resource_path("menu-icon.png"), GREY, (icon_dim, icon_dim)),
             'menu_white': self.load_colored_icon(resource_path("menu-icon.png"), WHITE, (icon_dim, icon_dim)),
             'replay_grey': self.load_colored_icon(resource_path("replay-icon.png"), GREY, (icon_dim, icon_dim)),
-            'replay_white': self.load_colored_icon(resource_path("replay-icon.png"), WHITE, (icon_dim, icon_dim))
+            'replay_white': self.load_colored_icon(resource_path("replay-icon.png"), WHITE, (icon_dim, icon_dim)),
+            'puck_grey': self.load_colored_icon(resource_path("puck_icon.svg"), GREY, (icon_dim, icon_dim)),
+            'puck_white': self.load_colored_icon(resource_path("puck_icon.svg"), WHITE, (icon_dim, icon_dim))
         }
         
+        gap = int(1.25 * current_ppi)
+        
         self.icon_rect.topright = (self.screen_w - int(1.8 * current_ppi), int(1.25 * current_ppi))
-        self.reset_btn_rect.topright = (self.icon_rect.left - int(1.25 * current_ppi), int(1.25 * current_ppi))
+        self.reset_btn_rect.topright = (self.icon_rect.left - gap, int(1.25 * current_ppi))
+        self.puck_btn_rect.topright = (self.reset_btn_rect.left - gap, int(1.25 * current_ppi))
 
     def load_colored_icon(self, filename, color, size):
         try:
@@ -239,14 +245,15 @@ class Shuffleboard:
                     self.board_length_ft = int(self.menu.length)
                     self.puck_size = self.menu.puck_size
                     self.scoreboard.reset()
-                    # --- FIX: Force P1 start when settings change ---
                     self.round_winner = P1
                     self.start_new_round()
                 else:
                     self._update_all_pucks_visuals()
 
+                gap = int(1.25 * constants.PPI)
                 self.icon_rect.topright = (self.screen_w - int(1.8 * constants.PPI), int(1.25 * constants.PPI))
-                self.reset_btn_rect.topright = (self.icon_rect.left - int(1.25 * constants.PPI), int(1.25 * constants.PPI))
+                self.reset_btn_rect.topright = (self.icon_rect.left - gap, int(1.25 * constants.PPI))
+                self.puck_btn_rect.topright = (self.reset_btn_rect.left - gap, int(1.25 * constants.PPI))
             else:
                 self._update_all_pucks_visuals()
 
@@ -260,6 +267,10 @@ class Shuffleboard:
                 if self.reset_btn_rect.collidepoint(event.pos):
                     self.reset_game()
                     return
+                if self.puck_btn_rect.collidepoint(event.pos):
+                    self.reset_non_scoring_pucks()
+                    return
+
             if self.game_over:
                 self.handle_free_play_input(event)
             else:
@@ -292,9 +303,33 @@ class Shuffleboard:
 
     def reset_game(self):
         self.scoreboard.reset()
-        # --- FIX: Force P1 start on manual reset ---
         self.round_winner = P1
         self.start_new_round()
+
+    def reset_non_scoring_pucks(self):
+        # 1. Identify which pucks should stay put (active) and which should move (inactive)
+        active_pucks = []
+        reset_candidates = []
+        
+        for p in self.gutter.pucks:
+            # Pucks that are on board, moving, or held should NOT move
+            if p.state in (STATE_ON_BOARD, STATE_THROWN, STATE_SELECTED):
+                active_pucks.append(p)
+            else:
+                # Reset state for the others
+                p.state = STATE_GUTTER
+                p.dx = 0; p.dy = 0
+                p.is_moving = False
+                reset_candidates.append(p)
+        
+        # 2. Temporarily set the gutter list to ONLY the ones we want to move
+        self.gutter.pucks = reset_candidates
+        
+        # 3. Use the existing scatter logic (so they land exactly like a new game)
+        self.gutter.scatter_pucks(self.screen_h)
+        
+        # 4. Add the active pucks back to the list
+        self.gutter.pucks.extend(active_pucks)
 
     def shoot_puck(self, puck, dx, dy):
         puck.dx = dx; puck.dy = dy
@@ -409,7 +444,12 @@ class Shuffleboard:
             self.gutter.draw_active_layer(self.screen)
             self.gutter.draw_hanging_layer(self.screen)
             m_pos = pygame.mouse.get_pos()
+            
             k_m = 'menu_white' if self.icon_rect.collidepoint(m_pos) else 'menu_grey'
             self.screen.blit(self.icons[k_m], self.icon_rect)
+            
             k_r = 'replay_white' if self.reset_btn_rect.collidepoint(m_pos) else 'replay_grey'
             self.screen.blit(self.icons[k_r], self.reset_btn_rect)
+            
+            k_p = 'puck_white' if self.puck_btn_rect.collidepoint(m_pos) else 'puck_grey'
+            self.screen.blit(self.icons[k_p], self.puck_btn_rect)
