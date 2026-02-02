@@ -92,6 +92,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 * Game Size: Increases or decreases the PPI (pixels per inch).
 * Table Length: Adjusts the length of the table from 9 feet to 22 feet.
 * Puck Size: Toggles between medium pucks (2 1/8 inches) and large pucks (2 5/16 inches).
+   * The default is medium pucks for tables less than 15 feet and large pucks for tables 15 feet and over.
 * Score Goal: Toggles between playing a game to 21 or 15 points.
 * Edge Points: Toggles scoring for pucks on the back edge between 4 points and 3 points.
 
