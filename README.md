@@ -61,9 +61,9 @@ The goal is to slide your pucks into the numbered zones at the opposite end of t
 
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. 
 
-* **1 Point:** Closest and largest zone with a length of 5 feet.
-* **2 Points:** Middle zone measuring 6 inches.
-* **3 Points:** Furthest zone also measuring 6 inches.
+* **1 Point:** Closest and largest zone, measuring 5 feet long.
+* **2 Points:** Middle zone, measuring 6 inches long.
+* **3 Points:** Furthest zone, measuring 6 inches long.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
 
 Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
