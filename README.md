@@ -1,6 +1,6 @@
 # Shuffleboard
 
-A physics-based 2-player table shuffleboard game built for macOS and Windows.
+A physics-based 2-player implementation of table shuffleboard built for macOS and Windows. This project is being developed as an environment for training and testing ML models to play competitively.
 
 ![Game Screenshot](screenshots/starting.png)
 
