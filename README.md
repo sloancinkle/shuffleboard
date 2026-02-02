@@ -8,7 +8,8 @@ This project is being developed as an environment to train and test ML models to
 
 ## Download
 
-* [**Download Shuffleboard (Google Drive)**](https://drive.google.com/drive/folders/1Tt1luu0RtnermsoRLjDpMUDOavBq4UG7?usp=sharing)
+* [**Download Shuffleboard for MacOS (Google Drive)**](https://drive.google.com/file/d/1vKc4h0UFCQ1bH6R-a3DQM6Tk1YMgJxbc/view?usp=drive_link)
+* [**Download Shuffleboard for Windows (Google Drive)**](https://drive.google.com/file/d/1MBFXPT7wwIOmyzQk7IHpd-XPYTnwQ20O/view?usp=drive_link)
 
 ---
 
