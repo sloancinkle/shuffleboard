@@ -18,17 +18,18 @@ This project is being developed as an environment to train and test ML models to
 ### macOS
 This application is not signed by Apple, so you will need to bypass the security check on first launch.
 
-1. Download the .zip file from the link above and unzip it. Delete the .zip file.
-2. Right-click (or Control-click) the Shuffleboard app icon and select Open.
-3. A warning dialog will appear. Click Done.
-4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway.
-5. Enter your user password if prompted.
+1. Download the macOS .zip file from the link above.2
+2. Unzip the .zip file then delete it.
+3. Right-click (or Control-click) Shuffleboard.app and select Open.
+4. A warning dialog will appear. Click Done.
+5. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway.
+6. Enter your user password if prompted.
 
 You only need to do this the first time. Afterwards, you can just click on the app to run it.
 
 ### Windows
-1. Download the Windows .zip file and unzip it.
-2. Move Shuffleboard.exe to a new location and delete the .zip file.
+1. Download the Windows .zip file from the link above.
+2. Open the .zip file and move Shuffleboard.exe to a new location. Delete the .zip file.
 3. Double-click Shuffleboard.exe to open.
 4. If Windows Defender prevents the app from starting, click More Info, then Run Anyway.
 
