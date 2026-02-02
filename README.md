@@ -18,7 +18,7 @@ This application is not signed by Apple, so you will need to bypass the security
 
 1. Download the .zip file from the link above and unzip it.
 2. Right-click (or Control-click) the Shuffleboard app icon and select Open.
-3. A warning dialog will appear. Click Close.
+3. A warning dialog will appear. Click Done.
 4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway.
 5. Enter your user password if prompted.
 
