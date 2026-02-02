@@ -52,12 +52,14 @@ A puck can only enter the foul and scoring areas and interact with pucks there i
 ### Objective
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the table to prevent them from scoring.
 
-Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
+Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. 
 
 * **1 Point:** Closest and largest zone.
 * **2 Points:** Middle zone.
 * **3 Points:** Furthest zone.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
+
+Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
 
 The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. The first player to reach 21 points, or optionally 15 points, wins the game. 
 
@@ -70,7 +72,7 @@ The digital scoreboard tracks the game state in real-time.
 
 * Main Score: Large numbers show the total accumulated score for the game.
 * Turn Indicator: The white dot indicates whose turn it is to throw.
-* Round Score: Small numbers show how many points would be added to your main score if the round ended now. This updates instantly as pucks move.
+* Round Score: Small numbers show the score for the current round. This updates instantly as pucks move.
 * Throws Remaining: The dashes at the bottom represent your pucks. Each player gets 4 throws per round.
 
 ---
