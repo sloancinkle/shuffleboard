@@ -58,8 +58,9 @@ class Puck:
         ppi = constants.PPI
         
         # Highlight Logic
-        valid_highlight_state = (self.state == STATE_GUTTER or self.state == STATE_READY)
-        if self.highlighted and valid_highlight_state:
+        # UPDATED: Remove valid_highlight_state restriction. 
+        # Trust that input.py only sets highlighted=True when appropriate.
+        if self.highlighted:
             pygame.draw.circle(screen, (255, 255, 255), (int(pos.x), int(pos.y)), self.radius_px + 3)
 
         # Draw Puck Body

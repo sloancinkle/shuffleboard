@@ -32,7 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['assets/MyIcon.icns'],
+    icon=['assets/app_icon.icns'],
 )
 coll = COLLECT(
     exe,
@@ -46,6 +46,6 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='Shuffleboard.app',
-    icon='assets/MyIcon.icns',
+    icon='assets/app_icon.icns',
     bundle_identifier=None,
 )

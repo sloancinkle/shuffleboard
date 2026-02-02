@@ -2,7 +2,8 @@ import pygame
 import math
 from . import constants
 from .constants import THROW_LINE_FT, MAX_POWER, \
-                       STATE_GUTTER, STATE_SELECTED, STATE_READY
+                       STATE_GUTTER, STATE_SELECTED, STATE_READY, \
+                       STATE_ON_BOARD, STATE_THROWN
 
 class InputHandler:
     def __init__(self):
@@ -14,7 +15,8 @@ class InputHandler:
         self.throw_history = []
 
     def handle_input(self, event, game):
-        if game.game_state != "AIMING":
+        # In Free Play, allow input regardless of game state
+        if not game.game_over and game.game_state != "AIMING":
             return
 
         ppi = constants.PPI
@@ -29,26 +31,53 @@ class InputHandler:
 
             for i in range(len(game.gutter.pucks) - 1, -1, -1):
                 puck = game.gutter.pucks[i]
-                valid_state = (puck.state == STATE_GUTTER or puck.state == STATE_READY)
                 
-                if valid_state and puck.owner == game.current_turn:
-                    if puck.get_screen_pos().distance_to(m_pos) < puck.radius_px:
-                        self.selected_puck = puck
-                        self.selected_puck.state = STATE_SELECTED
-                        self.selected_puck.is_selected = True
-                        self.throw_history = []
-                        # Move to top of list for rendering order
-                        game.gutter.pucks.append(game.gutter.pucks.pop(i))
-                        break
+                if game.game_over:
+                    valid_state = True
+                else:
+                    valid_state = (puck.state == STATE_GUTTER or puck.state == STATE_READY)
+                
+                if not game.game_over and puck.is_moving:
+                    valid_state = False
+
+                if valid_state:
+                    is_owner = (puck.owner == game.current_turn)
+                    if game.game_over or is_owner:
+                        if puck.get_screen_pos().distance_to(m_pos) < puck.radius_px:
+                            self.selected_puck = puck
+                            self.selected_puck.state = STATE_SELECTED
+                            self.selected_puck.is_selected = True
+                            
+                            self.selected_puck.dx = 0
+                            self.selected_puck.dy = 0
+                            self.selected_puck.is_moving = False
+                            
+                            self.throw_history = []
+                            game.gutter.pucks.append(game.gutter.pucks.pop(i))
+                            break
 
         elif event.type == pygame.MOUSEBUTTONUP:
             if self.selected_puck:
                 m_pos = pygame.mouse.get_pos()
-                
                 on_board = game.surface_rect.collidepoint(m_pos)
-                behind_line = m_pos[0] < control_limit_screen_x
                 
-                if on_board and behind_line:
+                # Determine if release is valid
+                valid_release = False
+                
+                if game.game_over:
+                    valid_release = True
+                else:
+                    if not on_board:
+                        # Gutter throw is valid but won't score/count
+                        valid_release = True
+                    else:
+                        # Board throw must be behind line
+                        if m_pos[0] < control_limit_screen_x:
+                            valid_release = True
+                        else:
+                            valid_release = False
+                
+                if valid_release:
                     self.execute_throw(game)
                 else:
                     self.cancel_throw(game)
@@ -64,8 +93,12 @@ class InputHandler:
                 y_in = (m_pos[1] - g_y) / ppi
                 self.selected_puck.set_pos(x_in, y_in)
                 
-                # Check constraints with other pucks (Gutter logic mainly)
-                active_obstacles = [] 
+                active_obstacles = [
+                    p for p in game.gutter.pucks 
+                    if p is not self.selected_puck 
+                    and p.state in (STATE_ON_BOARD, STATE_THROWN, STATE_READY)
+                ]
+
                 game.gutter.update_constraints(
                     self.selected_puck, 
                     game.screen_w, 
@@ -81,12 +114,16 @@ class InputHandler:
         for puck in game.gutter.pucks:
             puck.highlighted = False
 
-        if game.state != "GAME" or game.game_state != "AIMING":
-            return
+        if not game.game_over:
+            if game.state != "GAME" or game.game_state != "AIMING":
+                return
 
         m_pos = pygame.mouse.get_pos()
         for puck in game.gutter.pucks:
-            valid_state = (puck.state == STATE_GUTTER or puck.state == STATE_READY)
+            if game.game_over:
+                valid_state = True
+            else:
+                valid_state = (puck.state == STATE_GUTTER or puck.state == STATE_READY)
             
             if valid_state and not self.selected_puck:
                 if game.game_over or puck.owner == game.current_turn:
@@ -97,7 +134,10 @@ class InputHandler:
         self.selected_puck.is_selected = False
         touching = game.table.is_touching_table(self.selected_puck)
         if touching:
-            self.selected_puck.state = STATE_READY
+            if game.game_over:
+                self.selected_puck.state = STATE_ON_BOARD
+            else:
+                self.selected_puck.state = STATE_READY
         else:
             self.selected_puck.state = STATE_GUTTER
             
@@ -125,6 +165,15 @@ class InputHandler:
                 power_x *= scale
                 power_y *= scale
 
-            game.shoot_puck(self.selected_puck, power_x, power_y)
+            # Check where the puck is actually released
+            m_pos = pygame.mouse.get_pos()
+            on_board = game.surface_rect.collidepoint(m_pos)
+            
+            # Count throw only if on board and not free play
+            count_throw = False
+            if not game.game_over and on_board:
+                count_throw = True
+
+            game.shoot_puck(self.selected_puck, power_x, power_y, count_throw)
         else:
             self.cancel_throw(game)

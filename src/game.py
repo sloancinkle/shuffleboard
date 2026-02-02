@@ -152,8 +152,8 @@ class Shuffleboard:
             'menu_white': self.load_colored_icon(resource_path("menu-icon.png"), WHITE, (icon_dim, icon_dim)),
             'replay_grey': self.load_colored_icon(resource_path("replay-icon.png"), GREY, (icon_dim, icon_dim)),
             'replay_white': self.load_colored_icon(resource_path("replay-icon.png"), WHITE, (icon_dim, icon_dim)),
-            'puck_grey': self.load_colored_icon(resource_path("puck_icon.svg"), GREY, (icon_dim, icon_dim)),
-            'puck_white': self.load_colored_icon(resource_path("puck_icon.svg"), WHITE, (icon_dim, icon_dim))
+            'puck_grey': self.load_colored_icon(resource_path("puck_icon.png"), GREY, (icon_dim, icon_dim)),
+            'puck_white': self.load_colored_icon(resource_path("puck_icon.png"), WHITE, (icon_dim, icon_dim))
         }
         
         gap = int(1.25 * current_ppi)
@@ -271,10 +271,7 @@ class Shuffleboard:
                     self.reset_non_scoring_pucks()
                     return
 
-            if self.game_over:
-                self.handle_free_play_input(event)
-            else:
-                self.input.handle_input(event, self)
+            self.input.handle_input(event, self)
 
     def _update_all_pucks_visuals(self):
         c1 = PUCK_COLORS[self.menu.p1_color]
@@ -286,64 +283,60 @@ class Shuffleboard:
             p.font_name = "couriernew"
             p.text_color = BLACK
 
-    def handle_free_play_input(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            m_pos = pygame.mouse.get_pos()
-            for i in range(len(self.gutter.pucks) - 1, -1, -1):
-                puck = self.gutter.pucks[i]
-                if puck.state in (STATE_GUTTER, STATE_READY):
-                    if puck.get_screen_pos().distance_to(m_pos) < puck.radius_px:
-                        self.input.selected_puck = puck
-                        puck.state = STATE_SELECTED
-                        puck.is_selected = True
-                        self.gutter.pucks.append(self.gutter.pucks.pop(i))
-                        break
-        else:
-            self.input.handle_input(event, self)
-
     def reset_game(self):
         self.scoreboard.reset()
         self.round_winner = P1
         self.start_new_round()
 
     def reset_non_scoring_pucks(self):
-        # 1. Identify which pucks should stay put (active) and which should move (inactive)
-        active_pucks = []
-        reset_candidates = []
-        
-        for p in self.gutter.pucks:
-            # Pucks that are on board, moving, or held should NOT move
-            if p.state in (STATE_ON_BOARD, STATE_THROWN, STATE_SELECTED):
-                active_pucks.append(p)
-            else:
-                # Reset state for the others
+        if self.game_over:
+            for p in self.gutter.pucks:
                 p.state = STATE_GUTTER
-                p.dx = 0; p.dy = 0
+                p.dx = 0
+                p.dy = 0
                 p.is_moving = False
-                reset_candidates.append(p)
-        
-        # 2. Temporarily set the gutter list to ONLY the ones we want to move
-        self.gutter.pucks = reset_candidates
-        
-        # 3. Use the existing scatter logic (so they land exactly like a new game)
-        self.gutter.scatter_pucks(self.screen_h)
-        
-        # 4. Add the active pucks back to the list
-        self.gutter.pucks.extend(active_pucks)
+                p.is_selected = False
+            self.input.selected_puck = None
+            self.gutter.scatter_pucks(self.screen_h)
+        else:
+            active_pucks = []
+            reset_candidates = []
+            for p in self.gutter.pucks:
+                if p.state in (STATE_ON_BOARD, STATE_THROWN, STATE_SELECTED):
+                    active_pucks.append(p)
+                else:
+                    p.state = STATE_GUTTER
+                    p.dx = 0; p.dy = 0
+                    p.is_moving = False
+                    reset_candidates.append(p)
+            self.gutter.pucks = reset_candidates
+            self.gutter.scatter_pucks(self.screen_h)
+            self.gutter.pucks.extend(active_pucks)
 
-    def shoot_puck(self, puck, dx, dy):
+    def shoot_puck(self, puck, dx, dy, count_throw=True):
         puck.dx = dx; puck.dy = dy
         puck.is_moving = True
-        puck.state = STATE_THROWN
         puck.is_selected = False
-        if not self.game_over:
-            if self.throws_left[puck.owner] > 0: self.throws_left[puck.owner] -= 1
+        
         self.input.selected_puck = None
-        self.game_state = "MOVING"
+        
+        if count_throw:
+            puck.state = STATE_THROWN
+            if not self.game_over:
+                if self.throws_left[puck.owner] > 0: self.throws_left[puck.owner] -= 1
+            self.game_state = "MOVING"
+        else:
+            # Gutter throw
+            if self.table.is_touching_table(puck):
+                puck.state = STATE_THROWN
+            else:
+                puck.state = STATE_GUTTER 
 
     def update(self):
         if self.state == "GAME":
+            self.gutter.free_play = self.game_over
             self.input.update_hover(self)
+            
             current_ppi = constants.PPI 
             g_left_px = constants.GUTTER_PADDING_LEFT
             g_y_px = constants.GUTTER_PADDING_Y
@@ -352,7 +345,6 @@ class Shuffleboard:
             b_max_x = (self.screen_w - g_left_px) / current_ppi
             b_min_y = -g_y_px / current_ppi
             b_max_y = (self.screen_h - g_y_px) / current_ppi
-            screen_bounds = (b_min_x, b_max_x, b_min_y, b_max_y)
 
             board_len_in = (self.screen_w - g_left_px - constants.GUTTER_PADDING_RIGHT) / current_ppi
             throw_line_in = THROW_LINE_FT * 12
@@ -361,11 +353,22 @@ class Shuffleboard:
             moving_count = 0
             
             for puck in all_pucks:
+                if self.game_over:
+                     if puck.state == STATE_READY:
+                         puck.state = STATE_ON_BOARD
+                     if puck.state == STATE_THROWN and not puck.is_moving:
+                         puck.state = STATE_ON_BOARD
+
                 if puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]:
                     if not self.table.is_puck_stable(puck): puck.state = STATE_GUTTER
                 
                 if puck.is_moving:
-                    fric = TABLE_FRICTION if (puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]) else GUTTER_FRICTION
+                    if self.game_over:
+                        on_wood = self.table.is_touching_table(puck)
+                        fric = TABLE_FRICTION if on_wood else GUTTER_FRICTION
+                    else:
+                        fric = TABLE_FRICTION if (puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]) else GUTTER_FRICTION
+
                     is_still_moving = physics.update_puck_movement(puck, fric)
                     
                     if is_still_moving:
@@ -374,24 +377,43 @@ class Shuffleboard:
                         if puck.state == STATE_GUTTER:
                             self.gutter.resolve_rect_obstacle(puck, 0, board_len_in, 0, REAL_BOARD_WIDTH)
                         elif puck.state in (STATE_READY, STATE_SELECTED):
-                             self.gutter.resolve_rect_obstacle(puck, throw_line_in, board_len_in, 0, REAL_BOARD_WIDTH)
+                             if not self.game_over:
+                                self.gutter.resolve_rect_obstacle(puck, throw_line_in, board_len_in, 0, REAL_BOARD_WIDTH)
 
                     if puck.state in (STATE_THROWN, STATE_ON_BOARD): moving_count += 1
+
+                if puck.state == STATE_GUTTER:
+                    self.gutter.resolve_rect_obstacle(puck, 0, board_len_in, 0, REAL_BOARD_WIDTH)
 
             for i in range(len(all_pucks)):
                 p1 = all_pucks[i]
                 for j in range(i+1, len(all_pucks)):
                     p2 = all_pucks[j]
-                    valid_states = [STATE_THROWN, STATE_ON_BOARD, STATE_READY, STATE_SELECTED]
-                    if p1.state in valid_states and p2.state in valid_states:
+                    
+                    should_collide = False
+                    
+                    if p1.state == STATE_GUTTER and p2.state == STATE_GUTTER:
+                        should_collide = True
+                    
+                    elif self.game_over:
+                        s1_on_table = p1.state != STATE_GUTTER
+                        s2_on_table = p2.state != STATE_GUTTER
                         
-                        if p1.state == STATE_SELECTED and p2.state == STATE_ON_BOARD: continue
-                        if p2.state == STATE_SELECTED and p1.state == STATE_ON_BOARD: continue
-                        
+                        if s1_on_table and s2_on_table:
+                             should_collide = True
+
+                    else:
+                        valid_states = [STATE_THROWN, STATE_ON_BOARD, STATE_READY, STATE_SELECTED]
+                        if p1.state in valid_states and p2.state in valid_states:
+                             if p1.state == STATE_SELECTED and p2.state == STATE_ON_BOARD: pass
+                             elif p2.state == STATE_SELECTED and p1.state == STATE_ON_BOARD: pass
+                             else: should_collide = True
+                    
+                    if should_collide:
                         physics.check_puck_collision(p1, p2)
 
             scoring_candidates = [p for p in all_pucks if self.table.is_touching_table(p)]
-            self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.hangers_enabled)
+            self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.hangers_enabled, self.game_over)
 
             if self.game_state == "MOVING" and moving_count == 0: self.handle_turn_end()
             if self.game_state == "ROUND_OVER_DELAY":
@@ -399,23 +421,29 @@ class Shuffleboard:
                     winner, is_game_over = self.scoreboard.commit_round(self.menu.target_score)
                     if is_game_over:
                         self.game_over = True; self.round_winner = winner; self.game_state = "AIMING"
+                        memory.save_memory(self)
                     else:
                         self.round_winner = winner if winner else (P2 if self.round_winner == P1 else P1)
                         self.start_new_round()
 
     def handle_turn_end(self):
-        t_line = THROW_LINE_FT * 12
         f_line = (self.board_length_ft - FOUL_LINE_FT) * 12
+        
         for p in self.gutter.pucks:
-            if p.state == STATE_THROWN:
-                if p.x_in < t_line: p.state = STATE_READY
-                elif p.x_in < f_line:
-                    p.state = STATE_GUTTER
-                    self.gutter.place_puck_nearest(p, self.screen_h, self.screen_w)
-                else: p.state = STATE_ON_BOARD
-            elif p.state == STATE_ON_BOARD and p.x_in < f_line:
-                 p.state = STATE_GUTTER
-                 self.gutter.place_puck_nearest(p, self.screen_h, self.screen_w)
+            # UPDATED: Included STATE_READY to clear pucks sitting in the throwing zone
+            if p.state in (STATE_THROWN, STATE_ON_BOARD, STATE_READY):
+                if self.game_over:
+                    p.state = STATE_ON_BOARD
+                else:
+                    # STRICT RULE: Must completely cross foul line to stay.
+                    # Anything to the left (including throw zone) goes to gutter.
+                    has_crossed = (p.x_in - p.radius_in) > f_line
+                    
+                    if has_crossed:
+                        p.state = STATE_ON_BOARD
+                    else:
+                        p.state = STATE_GUTTER
+                        self.gutter.place_puck_nearest(p, self.screen_h, self.screen_w)
 
         if self.throws_left[P1] == 0 and self.throws_left[P2] == 0:
             self.game_state = "ROUND_OVER_DELAY"
@@ -434,15 +462,20 @@ class Shuffleboard:
         else:
             self.screen.fill(WOOD_DARK)
             c1, c2 = PUCK_COLORS[self.menu.p1_color], PUCK_COLORS[self.menu.p2_color]
-            self.scoreboard.draw(self.screen, self.screen_w, self.screen_h, self.throws_left, self.current_turn, c1, c2, self.game_state == "MOVING")
+            self.scoreboard.draw(self.screen, self.screen_w, self.screen_h, self.throws_left, self.current_turn, c1, c2, self.game_state == "MOVING", self.game_over)
             self.gutter.draw_gutter_layer(self.screen)
             shadow_offset = 4 
             shadow_surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
             shadow_surface.fill((0, 0, 0, 60)) 
             self.screen.blit(shadow_surface, (self.surface_rect.x + shadow_offset, self.surface_rect.y + shadow_offset))
             self.table.draw(self.screen)
+            
+            self.gutter.draw_puck_shadows(self.screen, self.surface_rect, [STATE_SELECTED, STATE_READY, STATE_THROWN])
             self.gutter.draw_active_layer(self.screen)
+            
+            self.gutter.draw_puck_shadows(self.screen, self.surface_rect, [STATE_ON_BOARD])
             self.gutter.draw_hanging_layer(self.screen)
+            
             m_pos = pygame.mouse.get_pos()
             
             k_m = 'menu_white' if self.icon_rect.collidepoint(m_pos) else 'menu_grey'

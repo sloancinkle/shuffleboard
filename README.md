@@ -45,10 +45,9 @@ You only need to do this the first time. Afterwards, you can just click on the a
 
 ### Board Layout
 The board is divided into specific areas divided by color and colored lines: 
-* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the table.
-* **Throwing Area:** The zone to the left of the **dotted blue line**. You must release your throw before your cursor crosses this line.
-* **Foul Area:** The zone between the spotted blue line and the **solid red line**. Any thrown puck that stops short of the red line is a foul and will be returned to the gutter.
-    * *Exception:* On a 9-foot table, there is no foul area. The throwing and scoring areas are separated by a **solid red line**.
+* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the table. You can throw pucks in here freely.
+* **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from this area to take your turn.
+* **Foul Area:** The entire zone to the left of the **solid red line**. At the start of each turn, any puck that has not crossed the red line is returned to the gutter.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
 ### Objective
@@ -68,7 +67,7 @@ The player who scores throws the first puck next round. If nobody scores in a ro
 ## The Scoreboard
 The digital scoreboard tracks the game state in real-time.
 
-![Scoreboard Screenshot](screenshots/scoreboard.png)
+![Gameplay Screenshot](screenshots/gameplay.png)
 
 * Main Score: Large numbers show the total accumulated score for the game.
 * Turn Indicator: The white dot indicates whose turn it is to throw.
@@ -87,9 +86,9 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ![Options Screenshot](screenshots/options.png)
 
 ### Table Settings
-* Window Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out to fit your screen.
+* Game Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out.
 * Table Length: Adjusts the physical length of the table from 9 feet to 22 feet.
-* Puck Size: Cycles between Medium (2 1/8 inches) and Large (2 5/16 inches).
+* Puck Size: Cycles between Medium (2 1/8") and Large (2 5/16").
 * Score Goal: Toggles between playing a game to 21 or 15 points.
 * Hanging Points: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
 

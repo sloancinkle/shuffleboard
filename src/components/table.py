@@ -28,7 +28,7 @@ class Table:
 
     def is_puck_stable(self, puck):
         board_len_in = self.rect.width / constants.PPI
-        tolerance = puck.radius_in * .25
+        tolerance = puck.radius_in * .22
         
         if puck.x_in < -tolerance or puck.x_in > board_len_in + tolerance:
             return False
@@ -63,9 +63,6 @@ class Table:
         # Labels
         self.draw_text(screen, "3", (right + line_3_x) / 2, self.rect.centery)
         self.draw_text(screen, "2", (line_3_x + line_2_x) / 2, self.rect.centery)
-        
-        # Move "1" to align visually with 2 and 3 (3 inches left of the 2-line)
-        # instead of centering it in the entire massive 1-point zone
         label_1_x = line_2_x - (3 * ppi)
         self.draw_text(screen, "1", label_1_x, self.rect.centery)
 
@@ -89,6 +86,7 @@ class Gutter:
     def __init__(self, puck_size):
         self.pucks = [] 
         self.puck_size = puck_size
+        self.free_play = False
 
     def add_puck(self, puck):
         if puck not in self.pucks:
@@ -219,24 +217,46 @@ class Gutter:
                 for j in range(i + 1, len(hand_pucks)):
                     p2 = hand_pucks[j]
                     
-                    # UPDATED: Use physics module instead of Puck methods
+                    # UPDATED: Use dynamic collision check between hand pucks (Gutter vs Selected)
+                    # This allows dragging a puck to "kick" other gutter pucks around
                     if p1 == selected_puck:
-                        physics.resolve_static_push(p1, p2)
+                        physics.check_puck_collision(p1, p2)
                     elif p2 == selected_puck:
-                        physics.resolve_static_push(p2, p1)
+                        physics.check_puck_collision(p2, p1)
                     else:
                         physics.resolve_static_overlap(p1, p2)
 
-            for hand_p in hand_pucks:
-                for active_p in active_pucks_obstacles:
-                    self.resolve_solid_collision(hand_p, active_p)
+        for hand_p in hand_pucks:
+            for active_p in active_pucks_obstacles:
+                if active_p.state == STATE_ON_BOARD:
+                    if self.free_play:
+                        if hand_p.state == STATE_SELECTED:
+                            physics.check_puck_collision(hand_p, active_p)
+                        else:
+                            pass
+                    else:
+                        pass
+                else:
+                    if hand_p.state == STATE_SELECTED:
+                        physics.check_puck_collision(hand_p, active_p)
+                    else:
+                        physics.resolve_static_push(active_p, hand_p)
 
-            for puck in hand_pucks:
-                if puck.x_in < min_screen_x + puck.radius_in: puck.x_in = min_screen_x + puck.radius_in
-                if puck.x_in > max_screen_x - puck.radius_in: puck.x_in = max_screen_x - puck.radius_in
-                if puck.y_in < min_screen_y + puck.radius_in: puck.y_in = min_screen_y + puck.radius_in
-                if puck.y_in > max_screen_y - puck.radius_in: puck.y_in = max_screen_y - puck.radius_in
+        for puck in hand_pucks:
+            if puck.x_in < min_screen_x + puck.radius_in: puck.x_in = min_screen_x + puck.radius_in
+            if puck.x_in > max_screen_x - puck.radius_in: puck.x_in = max_screen_x - puck.radius_in
+            if puck.y_in < min_screen_y + puck.radius_in: puck.y_in = min_screen_y + puck.radius_in
+            if puck.y_in > max_screen_y - puck.radius_in: puck.y_in = max_screen_y - puck.radius_in
 
+            check_obstacle = True
+            
+            if self.free_play:
+                if puck.state == STATE_SELECTED:
+                    check_obstacle = False
+                else:
+                    check_obstacle = True
+            
+            if check_obstacle:
                 if puck.state == STATE_GUTTER:
                     obs_min_x = 0
                 else: 
@@ -249,7 +269,6 @@ class Gutter:
                 self.resolve_rect_obstacle(puck, obs_min_x, obs_max_x, obs_min_y, obs_max_y)
 
     def resolve_solid_collision(self, mobile_puck, static_puck):
-        # Use physics helper logic
         physics.resolve_static_push(static_puck, mobile_puck)
 
     def resolve_rect_obstacle(self, puck, r_min_x, r_max_x, r_min_y, r_max_y):
@@ -288,7 +307,6 @@ class Gutter:
                 puck.x_in += nx * overlap
                 puck.y_in += ny * overlap
 
-            # Bounce Physics
             restitution = 0.7
             vn = (puck.dx * nx) + (puck.dy * ny)
             if vn < 0:
@@ -305,6 +323,20 @@ class Gutter:
         for puck in self.pucks:
             if puck.state in [STATE_SELECTED, STATE_READY, STATE_THROWN]:
                 puck.draw(screen)
+
+    def draw_puck_shadows(self, screen, surface_rect, target_states):
+        shadow_surf = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
+        offset = 2 
+        
+        for puck in self.pucks:
+            if puck.state in target_states:
+                pos = puck.get_screen_pos()
+                pygame.draw.circle(shadow_surf, (0, 0, 0, 60), 
+                                   (int(pos.x + offset), int(pos.y + offset)), 
+                                   puck.radius_px)
+        
+        shadow_surf.fill((0, 0, 0, 0), surface_rect)
+        screen.blit(shadow_surf, (0, 0))
 
     def draw_hanging_layer(self, screen):
         for puck in self.pucks:

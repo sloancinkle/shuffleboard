@@ -367,7 +367,7 @@ class Options:
         # --- Labels ---
         lbl_y = self.ppi_up_rect.top - int(1.5 * self.ppi)
         
-        win_lbl = self.small_label_font.render("Window Size", True, WHITE)
+        win_lbl = self.small_label_font.render("Game Size", True, WHITE)
         win_center_x = (self.ppi_down_rect.left + self.ppi_up_rect.right) // 2
         screen.blit(win_lbl, win_lbl.get_rect(center=(win_center_x, lbl_y)))
         
