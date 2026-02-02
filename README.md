@@ -29,7 +29,7 @@ You only need to do this the first time. Afterwards, you can just click on the a
 
 ### Windows
 1. Download the Windows .zip file from the link above.
-2. Open the .zip file and move Shuffleboard.exe to a new location. Delete the .zip file.
+2. Open the .zip file and copy Shuffleboard.exe to a new location. Delete the .zip file.
 3. Double-click Shuffleboard.exe to open.
 4. If Windows Defender prevents the app from starting, click More Info, then Run Anyway.
 
