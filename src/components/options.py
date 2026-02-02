@@ -199,7 +199,7 @@ class Options:
             if self.ppi_up_rect.collidepoint(m_pos):
                 if self.ppi < 18: self.ppi += 1.0; self.update_fonts(); return "RESIZE"
             if self.ppi_down_rect.collidepoint(m_pos):
-                if self.ppi > 6: self.ppi -= 1.0; self.update_fonts(); return "RESIZE"
+                if self.ppi > 7: self.ppi -= 1.0; self.update_fonts(); return "RESIZE"
             
             if self.btn_size_rect.collidepoint(m_pos): self.puck_size = PUCK_LARGE if self.puck_size == PUCK_MEDIUM else PUCK_MEDIUM
             if self.btn_score_rect.collidepoint(m_pos): self.target_score = 15 if self.target_score == 21 else 21

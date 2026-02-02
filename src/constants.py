@@ -1,5 +1,5 @@
 # --- Configuration & Constants ---
-PPI = 6.0  # 8 pixels = 1 inch
+PPI = 7.0  # 7 pixels = 1 inch
 
 # Dimensions
 REAL_BOARD_WIDTH = 20   
