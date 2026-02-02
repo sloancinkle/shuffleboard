@@ -45,6 +45,7 @@ The board is divided into specific areas divided by color and colored lines:
 * **The Gutter:** The dark area surrounding the table. You can move and throw pucks in here freely.
 * **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
 * **Foul Area:** The entire area to the left of the **solid red line**. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
+    * *Exception*: On a 9-foot table, the throwing and foul areas share a **solid red line**.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
 A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
@@ -89,7 +90,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ### Table Settings
 * Game Size: Increases or decreases the PPI (pixels per inch).
 * Table Length: Adjusts the length of the table from 9 feet to 22 feet.
-* Puck Size: Toggles between medium (2 1/8") and large (2 5/16").
+* Puck Size: Toggles between medium pucks (2 1/8 inches) and large pucks (2 5/16 inches).
 * Score Goal: Toggles between playing a game to 21 or 15 points.
 * Edge Points: Toggles scoring for pucks on the back edge between 4 points and 3 points.
 
