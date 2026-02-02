@@ -48,7 +48,7 @@ The board is divided into specific areas divided by color and colored lines:
     * *Exception*: On a 9-foot table, the throwing and foul areas share a **solid red line**.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
-A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
+A puck can only move from the throwing zone to the right side of the table and interact with pucks there if it has been thrown with momentum on your turn.
 
 ### Objective
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the table to prevent them from scoring.
@@ -79,7 +79,7 @@ The digital scoreboard tracks the game state in real-time.
 ---
 
 ## Game Options & Settings
-Click the Puck Icon on the top right corner to replace all non-scoring pucks in the left side gutter.
+Click the Puck Icon on the top right corner to move all non-scoring pucks back to the left side gutter.
 
 Click the Replay Icon on the top right corner to start a new game, resetting all pucks and the scoreboard.
 
