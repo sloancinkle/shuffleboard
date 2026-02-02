@@ -23,7 +23,7 @@ class Scoreboard:
         self.flash_timers = {}
         self.flash_colors = {}
 
-    def calculate_points(self, active_pucks, board_length_ft, hangers_enabled, game_over):
+    def calculate_points(self, active_pucks, board_length_ft, edging_enabled, game_over):
         # UPDATED: Added STATE_SELECTED to valid states, but ONLY if game_over is True
         valid = []
         for p in active_pucks:
@@ -54,9 +54,9 @@ class Scoreboard:
             
             dist_end = board_len_in - p.x_in
             left_edge = dist_end + p.radius_in
-            is_hanger = (p.x_in + p.radius_in > board_len_in)
+            is_edging = (p.x_in + p.radius_in > board_len_in)
             
-            if hangers_enabled and is_hanger: 
+            if edging_enabled and is_edging: 
                 pts += 4
             elif left_edge < line_3: pts += 3
             elif left_edge < line_2: pts += 2

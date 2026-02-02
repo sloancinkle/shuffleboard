@@ -14,7 +14,7 @@ class Options:
         self.length = current_length
         self.puck_size = current_puck_size
         self.ppi = constants.PPI 
-        self.hangers_enabled = True 
+        self.edging_enabled = True 
         self.target_score = 21
         
         self.p1_color = "Red"
@@ -23,7 +23,7 @@ class Options:
         
         self.orig_length = current_length
         self.orig_puck_size = current_puck_size
-        self.orig_hangers = True
+        self.orig_edging = True
         self.orig_target = 21
         
         # Track integer length to trigger resizes only on foot changes
@@ -41,7 +41,7 @@ class Options:
         
         self.btn_size_rect = pygame.Rect(0,0,0,0)
         self.btn_score_rect = pygame.Rect(0,0,0,0)
-        self.btn_hang_rect = pygame.Rect(0,0,0,0)
+        self.btn_edge_rect = pygame.Rect(0,0,0,0)
         self.start_btn_rect = pygame.Rect(0,0,0,0)
         self.p1_area_rect = pygame.Rect(0,0,0,0)
         self.p2_area_rect = pygame.Rect(0,0,0,0)
@@ -67,7 +67,7 @@ class Options:
     def set_initials(self, length, puck_size, target_score):
         self.orig_length = length
         self.orig_puck_size = puck_size
-        self.orig_hangers = self.hangers_enabled
+        self.orig_edging = self.edging_enabled
         self.orig_target = target_score
         self.last_int_length = int(length)
         
@@ -152,7 +152,7 @@ class Options:
         
         self.btn_size_rect = pygame.Rect(left_x, row2_y, btn_w, btn_h)
         self.btn_score_rect = pygame.Rect(self.btn_size_rect.right + btn_gap, row2_y, btn_w, btn_h)
-        self.btn_hang_rect = pygame.Rect(self.btn_score_rect.right + btn_gap, row2_y, btn_w, btn_h)
+        self.btn_edge_rect = pygame.Rect(self.btn_score_rect.right + btn_gap, row2_y, btn_w, btn_h)
 
         # --- CENTER COLUMN ---
         total_h = int(18.0 * ppi) 
@@ -203,7 +203,7 @@ class Options:
             
             if self.btn_size_rect.collidepoint(m_pos): self.puck_size = PUCK_LARGE if self.puck_size == PUCK_MEDIUM else PUCK_MEDIUM
             if self.btn_score_rect.collidepoint(m_pos): self.target_score = 15 if self.target_score == 21 else 21
-            if self.btn_hang_rect.collidepoint(m_pos): self.hangers_enabled = not self.hangers_enabled
+            if self.btn_edge_rect.collidepoint(m_pos): self.edging_enabled = not self.edging_enabled
 
             if math.hypot(m_pos[0]-self.get_handle_x(), m_pos[1]-self.slider_rect.centery) < self.handle_radius:
                 self.dragging_slider = True
@@ -384,7 +384,7 @@ class Options:
         
         self._draw_btn(screen, self.btn_size_rect, "Medium Pucks" if self.puck_size == PUCK_MEDIUM else "Large Pucks")
         self._draw_btn(screen, self.btn_score_rect, f"Game to {self.target_score}")
-        self._draw_btn(screen, self.btn_hang_rect, "Hanging for 4" if self.hangers_enabled else "Hanging for 3")
+        self._draw_btn(screen, self.btn_edge_rect, "+1 for Edge" if self.edging_enabled else "+0 for Edge")
 
         # --- Zones ---
         self._draw_zone_no_outline(screen, self.p1_area_rect)
@@ -393,7 +393,7 @@ class Options:
         # --- Resume ---
         has_changed = (int(self.length) != int(self.orig_length)) or \
                       (self.puck_size != self.orig_puck_size) or \
-                      (self.hangers_enabled != self.orig_hangers) or \
+                      (self.edging_enabled != self.orig_edging) or \
                       (self.target_score != self.orig_target)
         self._draw_btn(screen, self.start_btn_rect, "RESET" if has_changed else "RESUME")
 

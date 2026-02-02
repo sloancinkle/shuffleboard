@@ -86,11 +86,11 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ![Options Screenshot](screenshots/options.png)
 
 ### Table Settings
-* Game Size: Increases or decreases the PPI (pixels per inch), zooming the game window in or out.
-* Table Length: Adjusts the physical length of the table from 9 feet to 22 feet.
+* Game Size: Increases or decreases the PPI (pixels per inch).
+* Table Length: Adjusts the length of the table from 9 feet to 22 feet.
 * Puck Size: Toggles between medium (2 1/8") and large (2 5/16").
 * Score Goal: Toggles between playing a game to 21 or 15 points.
-* Hanging Points: Toggles scoring for pucks hanging off the edge between 4 points and 3 points.
+* Edge Points: Toggles scoring for pucks on the back edge between 4 points and 3 points.
 
 ### Player Customization
 * The two tables in the center allow you to choose puck colors. 
@@ -99,7 +99,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ### Resume vs. Reset
 * RESUME: Returns you to the current game without changes.
-* RESET: If you change a setting that affects gameplay (table length, puck size, score goal, or hanging points), the button will change to RESET. Clicking this will apply changes and start a new game by resetting the puck positions and scoreboard.
+* RESET: If you change a setting that affects gameplay (table length, puck size, score goal, or edge points), the button will change to RESET. Clicking this will apply changes and start a new game by resetting the puck positions and scoreboard.
 
 ---
 

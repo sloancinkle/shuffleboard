@@ -338,7 +338,7 @@ class Gutter:
         shadow_surf.fill((0, 0, 0, 0), surface_rect)
         screen.blit(shadow_surf, (0, 0))
 
-    def draw_hanging_layer(self, screen):
+    def draw_edging_layer(self, screen):
         for puck in self.pucks:
             if puck.state == STATE_ON_BOARD:
                 puck.draw(screen)

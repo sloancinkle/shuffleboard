@@ -56,10 +56,11 @@ class Shuffleboard:
             valid_save = True
 
         if valid_save:
-            s = saved_data["settings"]
-            self.board_length_ft = s["length"]
-            self.puck_size = s["puck_size"]
-            saved_ppi = s["ppi"]
+            # --- Robust Loading with Defaults ---
+            s = saved_data.get("settings", {})
+            self.board_length_ft = s.get("length", DEFAULT_LENGTH_FT)
+            self.puck_size = s.get("puck_size", DEFAULT_PUCK_SIZE)
+            saved_ppi = s.get("ppi", constants.PPI)
             
             force_update_ppi(saved_ppi)
             self.update_dimensions()
@@ -72,18 +73,22 @@ class Shuffleboard:
             self.menu = Options(self.board_length_ft, self.puck_size)
             
             self.menu.ppi = saved_ppi
-            self.menu.target_score = s["target_score"]
-            self.menu.hangers_enabled = s["hangers"]
-            self.menu.p1_color = s["p1_color_name"]
-            self.menu.p2_color = s["p2_color_name"]
+            self.menu.target_score = s.get("target_score", 21)
+            # UPDATED: Use new "edging" key, defaulting to True if missing (old save file)
+            self.menu.edging_enabled = s.get("edging", True)
+            self.menu.p1_color = s.get("p1_color_name", "Red")
+            self.menu.p2_color = s.get("p2_color_name", "Blue")
             self.menu.refresh_puck_positions() 
 
-            g = saved_data["gameplay"]
-            self.current_turn = g["current_turn"]
-            self.round_winner = g["round_winner"]
-            self.throws_left = {P1: g["throws_left_p1"], P2: g["throws_left_p2"]}
-            self.game_over = g["game_over"]
-            self.game_state = g["game_state"]
+            g = saved_data.get("gameplay", {})
+            self.current_turn = g.get("current_turn", P1)
+            self.round_winner = g.get("round_winner", P1)
+            self.throws_left = {
+                P1: g.get("throws_left_p1", 4), 
+                P2: g.get("throws_left_p2", 4)
+            }
+            self.game_over = g.get("game_over", False)
+            self.game_state = g.get("game_state", "AIMING")
             self.state = "GAME"
             
             if g.get("state_timer_active", False):
@@ -91,20 +96,24 @@ class Shuffleboard:
             else:
                 self.state_timer = 0
 
-            sc = saved_data["scores"]
-            self.scoreboard.p1_score = sc["p1_score"]
-            self.scoreboard.p2_score = sc["p2_score"]
-            self.scoreboard.round_points = {P1: sc["round_p1"], P2: sc["round_p2"]}
-            self.scoreboard.game_winner = sc["game_winner"]
+            sc = saved_data.get("scores", {})
+            self.scoreboard.p1_score = sc.get("p1_score", 0)
+            self.scoreboard.p2_score = sc.get("p2_score", 0)
+            self.scoreboard.round_points = {
+                P1: sc.get("round_p1", 0), 
+                P2: sc.get("round_p2", 0)
+            }
+            self.scoreboard.game_winner = sc.get("game_winner", None)
 
             self.gutter.pucks = []
-            for p_data in saved_data["pucks"]:
-                col = tuple(p_data["color"]) 
-                new_puck = Puck(p_data["owner"], self.puck_size, col, 
+            for p_data in saved_data.get("pucks", []):
+                col = tuple(p_data.get("color", PUCK_COLORS["Red"]))
+                owner = p_data.get("owner", P1)
+                new_puck = Puck(owner, self.puck_size, col, 
                                 font="couriernew", text_color=BLACK)
-                new_puck.x_in = p_data["x_in"]
-                new_puck.y_in = p_data["y_in"]
-                new_puck.state = p_data["state"]
+                new_puck.x_in = p_data.get("x_in", 0)
+                new_puck.y_in = p_data.get("y_in", 0)
+                new_puck.state = p_data.get("state", STATE_GUTTER)
                 
                 new_puck.dx = p_data.get("dx", 0)
                 new_puck.dy = p_data.get("dy", 0)
@@ -236,9 +245,10 @@ class Shuffleboard:
             elif result == "START":
                 memory.save_memory(self)
                 self.state = "GAME"
+                # UPDATED: Use new edging_enabled property name
                 has_changed = (int(self.menu.length) != int(self.menu.orig_length)) or \
                               (self.menu.puck_size != self.menu.orig_puck_size) or \
-                              (self.menu.hangers_enabled != self.menu.orig_hangers) or \
+                              (self.menu.edging_enabled != self.menu.orig_edging) or \
                               (self.menu.target_score != self.menu.orig_target)
                 
                 if has_changed:
@@ -326,7 +336,6 @@ class Shuffleboard:
                 if self.throws_left[puck.owner] > 0: self.throws_left[puck.owner] -= 1
             self.game_state = "MOVING"
         else:
-            # Gutter throw
             if self.table.is_touching_table(puck):
                 puck.state = STATE_THROWN
             else:
@@ -413,7 +422,8 @@ class Shuffleboard:
                         physics.check_puck_collision(p1, p2)
 
             scoring_candidates = [p for p in all_pucks if self.table.is_touching_table(p)]
-            self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.hangers_enabled, self.game_over)
+            # UPDATED: Use new edging_enabled property name
+            self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.edging_enabled, self.game_over)
 
             if self.game_state == "MOVING" and moving_count == 0: self.handle_turn_end()
             if self.game_state == "ROUND_OVER_DELAY":
@@ -430,13 +440,10 @@ class Shuffleboard:
         f_line = (self.board_length_ft - FOUL_LINE_FT) * 12
         
         for p in self.gutter.pucks:
-            # UPDATED: Included STATE_READY to clear pucks sitting in the throwing zone
             if p.state in (STATE_THROWN, STATE_ON_BOARD, STATE_READY):
                 if self.game_over:
                     p.state = STATE_ON_BOARD
                 else:
-                    # STRICT RULE: Must completely cross foul line to stay.
-                    # Anything to the left (including throw zone) goes to gutter.
                     has_crossed = (p.x_in - p.radius_in) > f_line
                     
                     if has_crossed:
@@ -474,7 +481,7 @@ class Shuffleboard:
             self.gutter.draw_active_layer(self.screen)
             
             self.gutter.draw_puck_shadows(self.screen, self.surface_rect, [STATE_ON_BOARD])
-            self.gutter.draw_hanging_layer(self.screen)
+            self.gutter.draw_edging_layer(self.screen)
             
             m_pos = pygame.mouse.get_pos()
             

@@ -26,7 +26,7 @@ def save_memory(game):
             "puck_size": game.puck_size,
             "ppi": constants.PPI,
             "target_score": game.menu.target_score,
-            "hangers": game.menu.hangers_enabled,
+            "edging": game.menu.edging_enabled,
             "p1_color_name": game.menu.p1_color,
             "p2_color_name": game.menu.p2_color
         },
@@ -54,7 +54,6 @@ def save_memory(game):
             "owner": p.owner,
             "x_in": p.x_in,
             "y_in": p.y_in,
-            # NEW: Save physics state
             "dx": p.dx,
             "dy": p.dy,
             "is_moving": p.is_moving,
@@ -67,7 +66,7 @@ def save_memory(game):
         with open(get_data_path(), 'w') as f:
             json.dump(data, f, indent=4)
     except Exception as e:
-        print(f"Failed to save memory: {e}")
+        print(f"Failed to save game data: {e}")
 
 def load_memory():
     path = get_data_path()
@@ -78,5 +77,5 @@ def load_memory():
         with open(path, 'r') as f:
             return json.load(f)
     except Exception as e:
-        print(f"Failed to load memory: {e}")
+        print(f"Failed to load game data: {e}")
         return None
