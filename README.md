@@ -77,9 +77,9 @@ The digital scoreboard tracks the game state in real-time.
 ---
 
 ## Game Options & Settings
-Click the Puck Icon on the top right corner to reset the puck positions in the left side gutter.
+Click the Puck Icon on the top right corner to replace all non-scoring pucks in the left side gutter.
 
-Click the Replay Icon on the top right corner to start a new game, resetting the puck positions and scoreboard.
+Click the Replay Icon on the top right corner to start a new game, resetting all pucks and the scoreboard.
 
 Click the Menu Icon on the top right corner to open the Options Screen.
 
