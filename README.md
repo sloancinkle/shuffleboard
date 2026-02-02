@@ -52,7 +52,7 @@ The board is divided into specific areas divided by color and colored lines.
 * **Foul Area:** The entire area to the left of the **solid red line**. This includes the throwing area. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
 * **Scoring Area:** The entire 6-foot area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
-*Exception*: The center of the table lengthens when table size is increased. On a 9-foot table, the throwing area and foul area share a **solid red line**. 
+*Exception*: The foul area lengthens when table size is increased. On a 9-foot table, the throwing area and foul area share a **solid red line**. 
 
 A puck can only move from the throwing zone to the right side of the table and interact with pucks there if it has been thrown with momentum on your turn.
 
