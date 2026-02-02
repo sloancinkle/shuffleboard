@@ -24,7 +24,6 @@ class Scoreboard:
         self.flash_colors = {}
 
     def calculate_points(self, active_pucks, board_length_ft, edging_enabled, game_over):
-        # UPDATED: Added STATE_SELECTED to valid states, but ONLY if game_over is True
         valid = []
         for p in active_pucks:
             if p.state in (STATE_ON_BOARD, STATE_THROWN):
@@ -39,19 +38,32 @@ class Scoreboard:
             self.round_points = points
             return
         
+        # Sort by distance (x_in) descending
         valid.sort(key=lambda p: p.x_in, reverse=True)
-        leader = valid[0]
-        leader_owner = leader.owner 
         
+        # Check if the lead is tied between different owners
+        leader = valid[0]
+        if len(valid) > 1 and valid[1].x_in == leader.x_in and valid[1].owner != leader.owner:
+            self.round_points = points # Tie at the top, no one scores
+            return
+
+        leader_owner = leader.owner 
         pts = 0
         board_len_in = board_length_ft * 12
-        line_3 = 6 
-        line_2 = 12
-        line_1 = 72
+        line_3, line_2, line_1 = 6, 12, 72
         
         for p in valid:
-            if p.owner != leader_owner: break
+            if p.owner != leader_owner:
+                # We reached an opponent's puck. 
+                # If it's tied with the previous scoring pucks, they are disqualified.
+                break 
             
+            # Check if this puck is tied with the nearest opponent puck
+            # (We find the first opponent puck to check for a tie)
+            opponent_pucks = [op for op in valid if op.owner != leader_owner]
+            if opponent_pucks and p.x_in == opponent_pucks[0].x_in:
+                continue # This puck is tied with an opponent and doesn't count
+
             dist_end = board_len_in - p.x_in
             left_edge = dist_end + p.radius_in
             is_edging = (p.x_in + p.radius_in > board_len_in)

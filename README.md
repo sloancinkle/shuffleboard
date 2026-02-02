@@ -66,7 +66,7 @@ Points are awarded based on where the pucks lie at the end of a round. A puck mu
 * **3 Points:** Furthest zone, measuring 6 inches long.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
 
-Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
+Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. If two opposing pucks are tied for distance, neither scores. 
 
 The player who scores throws the first puck next round. If nobody scores in a round, the starting puck changes hands. The first player to reach 21 points, or optionally 15 points, wins the game. 
 
