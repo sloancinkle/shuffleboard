@@ -37,17 +37,17 @@ You only need to do this the first time. Afterwards, you can just click on the a
 
 ### Controls & Mechanics
 1. **Grab:** On your turn, hover your mouse over one of your colored pucks, then click and hold to grab it.
-2. **Throw:** Drag the mouse quickly and release the click inside the throwing area to launch the puck.
-
-* You can release a puck in the gutter or throwing area with no momentum to drop it.
-* A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
+2. **Throw:** Drag the mouse quickly and release the click to launch the puck.
+3. **Drop:** Release a puck with no momentum to drop it.
 
 ### Board Layout
 The board is divided into specific areas divided by color and colored lines: 
-* **The Gutter:** The dark area surrounding the table. This is where your pucks start before you throw them, and where pucks end if they fall off the table. You can throw pucks in here freely.
-* **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from this area to take your turn.
+* **The Gutter:** The dark area surrounding the table. You can move and throw pucks in here freely.
+* **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
 * **Foul Area:** The entire area to the left of the **solid red line**. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
 * **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
+
+A puck can only enter the foul and scoring areas and interact with pucks there if it has been thrown from the throwing area with momentum on your turn.
 
 ### Objective
 The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the table to prevent them from scoring.
