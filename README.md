@@ -41,7 +41,10 @@ You only need to do this the first time. Afterwards, you can just click on the a
 3. **Drop:** Release a puck with no momentum to drop it.
 
 ### Board Layout
-The board is divided into specific areas divided by color and colored lines: 
+The board is divided into specific areas divided by color and colored lines.
+
+![Gameplay Screenshot](screenshots/gameplay.png)
+
 * **The Gutter:** The dark area surrounding the table. You can move and throw pucks in here freely.
 * **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
 * **Foul Area:** The entire area to the left of the **solid red line**. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
@@ -68,8 +71,6 @@ The player who scores throws the first puck next round. If nobody scores in a ro
 
 ## The Scoreboard
 The digital scoreboard tracks the game state in real-time.
-
-![Gameplay Screenshot](screenshots/gameplay.png)
 
 * Main Score: Large numbers show the total accumulated score for the game.
 * Turn Indicator: The white dot indicates whose turn it is to throw.
