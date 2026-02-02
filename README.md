@@ -125,4 +125,4 @@ To reset everything to default (delete your save):
 
 Found a bug or have a suggestion? Send me an email at **sloan@cinkle.com**.
 
-If you love the game and wanna buy me a coffee, find me on Venmo or CashApp at **@sloancinkle**.
+Love the game and wanna buy me a coffee? Find me on Venmo or CashApp at **@sloancinkle**.
