@@ -18,7 +18,7 @@ This project is being developed as an environment to train and test ML models to
 ### macOS
 This application is not signed by Apple, so you will need to bypass the security check on first launch.
 
-1. Download the macOS .zip file from the link above.2
+1. Download the macOS .zip file from the link above.
 2. Unzip the .zip file then delete it.
 3. Right-click (or Control-click) Shuffleboard.app and select Open.
 4. A warning dialog will appear. Click Done.
