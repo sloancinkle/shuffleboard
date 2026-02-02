@@ -22,7 +22,7 @@ This application is not signed by Apple, so you will need to bypass the security
 4. Open your System Settings > Privacy & Security, scroll to the bottom, and click Open Anyway.
 5. Enter your user password if prompted.
 
-Note: You only need to do this the first time. Afterwards, you can just click on the app to run it.
+You only need to do this the first time. Afterwards, you can just click on the app to run it.
 
 ### Windows
 1. Download the Windows .zip file and unzip it.
@@ -92,7 +92,7 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ### Player Customization
 * The two tables in the center allow you to choose puck colors. 
 * The top table is for Player 1 (scoreboard left), and the bottom table is for Player 2 (scoreboard right).
-* Tip: You can practice throwing pucks on these mini-tables to test the friction!
+* Tip: Practice throwing pucks on these tables to test the friction!
 
 ### Resume vs. Reset
 * RESUME: Returns you to the current game without changes.
@@ -125,4 +125,4 @@ To reset everything to default (delete your save):
 
 Found a bug or have a suggestion? Send me an email at **sloan@cinkle.com**.
 
-If you loved the game and want to buy me a coffee, find me on Venmo or CashApp at **@sloancinkle**.
+If you love the game and wanna buy me a coffee, find me on Venmo or CashApp at **@sloancinkle**.
