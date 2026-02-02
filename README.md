@@ -101,12 +101,12 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ### Resume vs. Reset
 * RESUME: Returns you to the current game without changes.
-* RESET: If you change a setting that affects gameplay (table length, puck size, score goal, or edge points), the button will change to RESET. Clicking this will apply changes and start a new game by resetting the puck positions and scoreboard.
+* RESET: If you change a setting that affects gameplay, the button will change to RESET. Clicking this will apply changes and start a new game.
 
 ---
 
 ## Saving & Memory
-The game automatically saves your progress (score, puck positions, current turn) and your settings preferences.
+The game automatically saves your game progress and your settings preferences.
 
 Warning:
 If you force quit the app using Command+Q (Mac) or Alt+F4 (Windows), the game may not save the current state. Close the window using the 'X' button to ensure your game is saved.
