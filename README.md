@@ -1,6 +1,8 @@
 # Shuffleboard
 
-**Shuffleboard** is a physics-based table shuffleboard game built for macOS and Windows. Currently a 2-player open implementation, this project is being developed as an environment for training and testing ML models to play competitively.
+**Shuffleboard** is a physics-based table shuffleboard game built for macOS and Windows. It is currently an open 2-player implementation.
+
+This project is being developed as an environment to train and test ML models to play competitively.
 
 ![Game Screenshot](screenshots/starting.png)
 
