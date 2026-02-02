@@ -48,10 +48,11 @@ The board is divided into specific areas divided by color and colored lines.
 ![Gameplay Screenshot](screenshots/gameplay.png)
 
 * **The Gutter:** The dark area surrounding the table. You can move and throw pucks in here freely.
-* **Throwing Area:** The zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
-* **Foul Area:** The entire area to the left of the **solid red line**. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
-    * *Exception*: On a 9-foot table, the throwing and foul areas share a **solid red line**.
-* **Scoring Area:** The entire area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
+* **Throwing Area:** The 3-foot zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
+* **Foul Area:** The entire area to the left of the **solid red line**. This includes the throwing area. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
+* **Scoring Area:** The entire 6-foot area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
+
+*Exception*: The central foul area between the two lines lengthens when table size is increased. On a 9-foot table, the throwing area and foul area share a **solid red line**. 
 
 A puck can only move from the throwing zone to the right side of the table and interact with pucks there if it has been thrown with momentum on your turn.
 
@@ -60,9 +61,9 @@ The goal is to slide your pucks into the numbered zones at the opposite end of t
 
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. 
 
-* **1 Point:** Closest and largest zone.
-* **2 Points:** Middle zone.
-* **3 Points:** Furthest zone.
+* **1 Point:** Closest and largest zone with a length of 5 feet.
+* **2 Points:** Middle zone measuring 6 inches.
+* **3 Points:** Furthest zone also measuring 6 inches.
 * **4 Points (Optional):** A puck hanging partially off the back edge of the 3 point zone.
 
 Only the player with the furthest puck scores points for the round. They receive points for every puck that is ahead of their opponent's furthest puck. 
