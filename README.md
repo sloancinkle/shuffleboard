@@ -4,7 +4,7 @@
 
 This project is being developed as an environment to train and test ML models to play competitively.
 
-![Game Screenshot](screenshots/starting.png)
+![Game Screenshot](screenshots/starting.gif)
 
 ## Download
 
@@ -45,7 +45,7 @@ You only need to do this the first time. Afterwards, you can just click on the a
 ### Board Layout
 The board is divided into specific areas divided by color and colored lines.
 
-![Gameplay Screenshot](screenshots/gameplay.png)
+![Board Screenshot](screenshots/gameplay.gif)
 
 * **The Gutter:** The dark area surrounding the table. You can move and throw pucks in here freely.
 * **Throwing Area:** The 3-foot zone to the left of the **dotted blue line**. Throw a puck from inside this area to take your turn.
@@ -75,6 +75,8 @@ The player who scores throws the first puck next round. If nobody scores in a ro
 ## The Scoreboard
 The digital scoreboard tracks the game state in real-time.
 
+![Scoreboard Screenshot](screenshots/scoreboard.gif)
+
 * Main Score: Large numbers show the total accumulated score for the game.
 * Turn Indicator: The white dot indicates whose turn it is to throw.
 * Round Score: Small numbers show the score for the current round. This updates instantly as pucks move.
@@ -89,7 +91,7 @@ Click the Replay Icon on the top right corner to start a new game, resetting all
 
 Click the Menu Icon on the top right corner to open the Options Screen.
 
-![Options Screenshot](screenshots/options.png)
+![Options Screenshot](screenshots/options.gif)
 
 ### Table Settings
 * Game Size: Increases or decreases the PPI (pixels per inch).
@@ -101,12 +103,11 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 
 ### Player Customization
 * The two tables in the center allow you to choose puck colors. 
-* The top table is for Player 1 (scoreboard left), and the bottom table is for Player 2 (scoreboard right).
-* Tip: Practice throwing pucks on these tables to test the friction!
+* The top table corresponds to scoreboard left, and the bottom table corresponds to scoreboard right.
 
 ### Resume vs. Reset
-* RESUME: Returns you to the current game without changes.
-* RESET: If you change a setting that affects gameplay, the button will change to RESET. Clicking this will apply changes and start a new game.
+* RESUME: Returns you to the current game.
+* RESET: If you change a setting that affects gameplay, the button changes to RESET. Clicking this starts a new game.
 
 ---
 
