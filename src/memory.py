@@ -25,6 +25,8 @@ def save_memory(game):
             "length": game.board_length_ft,
             "puck_size": game.puck_size,
             "ppi": constants.PPI,
+            "window_width": game.screen_w,
+            "window_height": game.screen_h,
             "target_score": game.menu.target_score,
             "edging": game.menu.edging_enabled,
             "p1_color_name": game.menu.p1_color,

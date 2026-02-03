@@ -97,66 +97,48 @@ class Options:
         return pucks
 
     def update_layout(self, screen_w, screen_h):
-        ppi = self.ppi
+        self.ppi = constants.PPI  # Sync with current global PPI
         self.screen_w = screen_w
         self.screen_h = screen_h
+        self.update_fonts() # Ensure fonts scale with new PPI
         
-        col_gap = int(2.0 * ppi)
+        col_gap = int(2.0 * self.ppi)
+        margin = int(6.0 * self.ppi) 
         
-        # INCREASED MARGIN: Adds borders to the edge and shrinks the center column
-        margin = int(6.0 * ppi) 
+        left_w = int(36.0 * self.ppi) 
+        right_w = int(15.0 * self.ppi)
         
-        # Fixed Widths
-        left_w = int(36.0 * ppi) 
-        right_w = int(15.0 * ppi)
-        
-        # Dynamic Center Width: Fills the remaining space minus the larger margins
         used_width = left_w + right_w + (col_gap * 2) + (margin * 2)
-        center_w = max(int(10 * ppi), screen_w - used_width)
+        center_w = max(int(10 * self.ppi), screen_w - used_width)
         
-        # Start X is effectively the margin
         start_x = (screen_w - (left_w + col_gap + center_w + col_gap + right_w)) // 2
-        
         left_x = start_x
         center_x = left_x + left_w + col_gap
         right_x = center_x + center_w + col_gap
         
         # --- LEFT COLUMN LAYOUT ---
-        slider_row_h = int(3.5 * ppi)
-        btn_h = int(6.0 * ppi)   
-        gap_between_rows = int(3.5 * ppi) 
+        slider_row_h = int(3.5 * self.ppi)
+        btn_h = int(6.0 * self.ppi)   
+        gap_between_rows = int(3.5 * self.ppi) 
         
         total_left_h = slider_row_h + gap_between_rows + btn_h
         left_start_y = (screen_h - total_left_h) // 2
         
-        row1_y = left_start_y
-        
-        # Window Size Buttons
-        ppi_btn_w = int(6.5 * ppi) 
-        ppi_btn_h = slider_row_h
-        ppi_gap = int(0.5 * ppi)
-        
-        self.ppi_down_rect = pygame.Rect(left_x, row1_y, ppi_btn_w, ppi_btn_h)
-        self.ppi_up_rect = pygame.Rect(self.ppi_down_rect.right + ppi_gap, row1_y, ppi_btn_w, ppi_btn_h)
-        
-        # Slider
-        slider_gap = int(2.5 * ppi) 
-        slider_x = self.ppi_up_rect.right + slider_gap
-        slider_w = (left_x + left_w) - slider_x
-        self.slider_rect = pygame.Rect(slider_x, row1_y, slider_w, slider_row_h)
+        # Slider now extends the full width of the left column
+        self.slider_rect = pygame.Rect(left_x, left_start_y, left_w, slider_row_h)
         
         # Toggles
-        row2_y = row1_y + slider_row_h + gap_between_rows
-        btn_gap = int(0.5 * ppi)
+        row2_y = left_start_y + slider_row_h + gap_between_rows
+        btn_gap = int(0.5 * self.ppi)
         btn_w = (left_w - (2 * btn_gap)) // 3
         
         self.btn_size_rect = pygame.Rect(left_x, row2_y, btn_w, btn_h)
         self.btn_score_rect = pygame.Rect(self.btn_size_rect.right + btn_gap, row2_y, btn_w, btn_h)
         self.btn_edge_rect = pygame.Rect(self.btn_score_rect.right + btn_gap, row2_y, btn_w, btn_h)
 
-        # --- CENTER COLUMN ---
-        total_h = int(18.0 * ppi) 
-        box_gap = int(1.0 * ppi)
+        # --- CENTER COLUMN (Zones) ---
+        total_h = int(18.0 * self.ppi) 
+        box_gap = int(1.0 * self.ppi)
         box_h = (total_h - box_gap) // 2
         colors_top_y = (screen_h - total_h) // 2
         
@@ -164,9 +146,12 @@ class Options:
         self.p2_area_rect = pygame.Rect(center_x, self.p1_area_rect.bottom + box_gap, center_w, box_h)
         
         # --- RIGHT COLUMN ---
-        resume_y = (screen_h - btn_h) // 2
-        self.start_btn_rect = pygame.Rect(right_x, resume_y, right_w, btn_h)
+        self.start_btn_rect = pygame.Rect(right_x, (screen_h - btn_h) // 2, right_w, btn_h)
 
+        # Force all menu pucks to update their pixel radius and stay in bounds
+        for p in self.menu_pucks:
+            p.update_visuals(self.puck_size, constants.PUCK_COLORS[p.color_name])
+            
         self._confine_pucks(self.menu_pucks_p1, self.p1_area_rect)
         self._confine_pucks(self.menu_pucks_p2, self.p2_area_rect)
 
@@ -195,11 +180,6 @@ class Options:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.start_btn_rect.collidepoint(m_pos): return "START"
-            
-            if self.ppi_up_rect.collidepoint(m_pos):
-                if self.ppi < 18: self.ppi += 1.0; self.update_fonts(); return "RESIZE"
-            if self.ppi_down_rect.collidepoint(m_pos):
-                if self.ppi > 7: self.ppi -= 1.0; self.update_fonts(); return "RESIZE"
             
             if self.btn_size_rect.collidepoint(m_pos): self.puck_size = PUCK_LARGE if self.puck_size == PUCK_MEDIUM else PUCK_MEDIUM
             if self.btn_score_rect.collidepoint(m_pos): self.target_score = 15 if self.target_score == 21 else 21
@@ -245,11 +225,16 @@ class Options:
                 ratio = (m_x - self.slider_rect.left) / self.slider_rect.width
                 self.length = self.min_len + (ratio * (self.max_len - self.min_len))
                 
-                if self.length >= 15: self.puck_size = PUCK_LARGE
-                else: self.puck_size = PUCK_MEDIUM
+                new_int_len = int(self.length)
                 
-                if int(self.length) != self.last_int_length:
-                    self.last_int_length = int(self.length)
+                if self.last_int_length < 15 and new_int_len >= 15:
+                    self.puck_size = PUCK_LARGE
+                
+                elif self.last_int_length >= 15 and new_int_len < 15:
+                    self.puck_size = PUCK_MEDIUM
+
+                if new_int_len != self.last_int_length:
+                    self.last_int_length = new_int_len
                     return "SLIDER_UPDATE"
             
             if self.selected_puck:
@@ -362,26 +347,20 @@ class Options:
         
     def draw(self, screen):
         self.update_physics()
-        screen.fill(WOOD_DARK)
+        screen.fill(constants.WOOD_DARK)
         
         # --- Labels ---
-        lbl_y = self.ppi_up_rect.top - int(1.5 * self.ppi)
+        lbl_y = self.slider_rect.top - int(1.5 * self.ppi)
         
-        win_lbl = self.small_label_font.render("Game Size", True, WHITE)
-        win_center_x = (self.ppi_down_rect.left + self.ppi_up_rect.right) // 2
-        screen.blit(win_lbl, win_lbl.get_rect(center=(win_center_x, lbl_y)))
-        
-        len_lbl = self.small_label_font.render(f"Table Length: {int(self.length)} Ft", True, WHITE)
+        # Only draw the Table Length label
+        len_lbl = self.small_label_font.render(f"Table Length: {int(self.length)} Ft", True, constants.WHITE)
         screen.blit(len_lbl, len_lbl.get_rect(center=(self.slider_rect.centerx, lbl_y)))
         
-        # --- Controls ---
-        self._draw_arrow(screen, self.ppi_down_rect, "down")
-        self._draw_arrow(screen, self.ppi_up_rect, "up")
-        
+        # --- Slider ---
         track_rect = pygame.Rect(self.slider_rect.left, self.slider_rect.centery - 4, self.slider_rect.width, 8)
         pygame.draw.rect(screen, (100, 50, 0), track_rect, border_radius=4)
-        pygame.draw.circle(screen, WOOD_LIGHT, (int(self.get_handle_x()), int(self.slider_rect.centery)), self.handle_radius)
-        
+        pygame.draw.circle(screen, constants.WOOD_LIGHT, (int(self.get_handle_x()), int(self.slider_rect.centery)), self.handle_radius)
+
         self._draw_btn(screen, self.btn_size_rect, "Medium Pucks" if self.puck_size == PUCK_MEDIUM else "Large Pucks")
         self._draw_btn(screen, self.btn_score_rect, f"Game to {self.target_score}")
         self._draw_btn(screen, self.btn_edge_rect, "+1 for Edge" if self.edging_enabled else "+0 for Edge")

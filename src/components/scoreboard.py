@@ -137,16 +137,18 @@ class Scoreboard:
                     self._draw_segment(screen, poly_pts, color)
             x += w + spacing
 
-    def draw(self, screen, screen_w, screen_h, throws_left, current_turn, p1_rgb, p2_rgb, is_moving, game_over=False):
+    def draw(self, screen, screen_w, screen_h, throws_left, current_turn, p1_rgb, p2_rgb, is_moving, game_over=False, board_length_px=0):
         ppi = constants.PPI
-        g_right = constants.GUTTER_PADDING_RIGHT
+        table_right_edge = constants.GUTTER_PADDING_LEFT + board_length_px
         
-        box_w = int(21.0 * ppi) 
+        gap_px = constants.SCORE_GAP_IN * ppi
+        
+        box_w = int(21.0 * ppi)
         box_h = int(12.0 * ppi)
         
-        gutter_center_x = screen_w - (g_right // 2)
+        box_center_x = table_right_edge + gap_px + (box_w // 2)
         box_rect = pygame.Rect(0, 0, box_w, box_h)
-        box_rect.center = (gutter_center_x, screen_h // 2)
+        box_rect.center = (box_center_x, screen_h // 2)
 
         thickness = max(2, int(0.3 * ppi)) 
         digit_size = int(1.75 * ppi)

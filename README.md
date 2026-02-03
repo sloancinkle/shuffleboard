@@ -1,6 +1,6 @@
 # Shuffleboard
 
-**Shuffleboard** is a physics-based table shuffleboard game built for macOS and Windows. It is currently an open 2-player implementation.
+**Shuffleboard** is a simple table shuffleboard game built for macOS and Windows. It is currently an open 2-player implementation.
 
 This project is being developed as an environment to train and test ML models to play competitively.
 
@@ -52,12 +52,12 @@ The board is divided into specific areas divided by color and colored lines.
 * **Foul Area:** The entire area to the left of the **solid red line**. This includes the throwing area. At the start of each turn, any puck that has not fully crossed the red line is returned to the gutter.
 * **Scoring Area:** The entire 6-foot area to the right of the **solid red line**. Pucks must completely cross this line to stay on the table and count towards points for the round.
 
-*Exception*: The foul area lengthens when table length is increased. On a 9-foot table, the throwing area and foul area share a **solid red line**. 
+The foul area lengthens as table length is increased. On a 9-foot table, the throwing area and foul area share a **solid red line**. 
 
 A puck can only move from the throwing zone to the right side of the table and interact with pucks there if it has been thrown with momentum on your turn.
 
 ### Objective
-The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also try to knock your opponent's pucks off the table to prevent them from scoring.
+The goal is to slide your pucks into the numbered zones at the opposite end of the table without falling off the end or sides. You can also knock your opponent's pucks off the table to prevent them from scoring.
 
 Points are awarded based on where the pucks lie at the end of a round. A puck must completely cross over a line to be in the next zone. 
 
@@ -94,8 +94,8 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ![Options Screenshot](screenshots/options.gif)
 
 ### Table Settings
-* Game Size: Increases or decreases the PPI (pixels per inch).
-* Table Length: Adjusts the length of the table from 9 feet to 22 feet.
+* Game Size: Increases or decreases the PPI (pixels per inch) from 7 (default) to 18.
+* Table Length: Adjusts the length of the table from 9 feet (default) to 22 feet.
 * Puck Size: Toggles between medium pucks (2 1/8 inches) and large pucks (2 5/16 inches).
    * The default is medium pucks for tables less than 15 feet and large pucks for tables 15 feet and over.
 * Score Goal: Toggles between playing a game to 21 or 15 points.

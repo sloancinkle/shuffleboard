@@ -13,11 +13,11 @@ from .components.scoreboard import Scoreboard
 from .components.table import Table, Gutter
 from .components.puck import Puck 
 
-from .constants import REAL_BOARD_WIDTH, FPS, WOOD_DARK, WHITE, GREY, BLACK, \
+from .constants import REAL_BOARD_WIDTH, FPS, WOOD_DARK, BLACK, \
                        FOUL_LINE_FT, DEFAULT_LENGTH_FT, DEFAULT_PUCK_SIZE, \
                        TABLE_FRICTION, GUTTER_FRICTION, THROW_LINE_FT, \
                        STATE_GUTTER, STATE_THROWN, STATE_ON_BOARD, STATE_SELECTED, STATE_READY, \
-                       P1, P2, PUCK_COLORS
+                       P1, P2, PUCK_COLORS, SCORE_GAP_IN
 
 def resource_path(relative_path):
     try:
@@ -37,6 +37,8 @@ def force_update_ppi(new_ppi):
 class Shuffleboard:
     def __init__(self):
         pygame.init()
+        pygame.display.set_caption("Shuffleboard")
+
         try:
             icon_path = resource_path("app_icon.png")
             pygame_icon = pygame.image.load(icon_path)
@@ -50,31 +52,32 @@ class Shuffleboard:
         self.puck_size = DEFAULT_PUCK_SIZE
         
         saved_data = memory.load_memory()
-        
-        valid_save = False
-        if saved_data and "gameplay" in saved_data and "settings" in saved_data:
-            valid_save = True
+        valid_save = bool(saved_data and "gameplay" in saved_data and "settings" in saved_data)
+
+        self.menu = Options(self.board_length_ft, self.puck_size) 
+        self.scoreboard = Scoreboard()
+        self.gutter = Gutter(self.puck_size)
+        self.input = InputHandler()
 
         if valid_save:
-            # --- Robust Loading with Defaults ---
             s = saved_data.get("settings", {})
             self.board_length_ft = s.get("length", DEFAULT_LENGTH_FT)
             self.puck_size = s.get("puck_size", DEFAULT_PUCK_SIZE)
-            saved_ppi = s.get("ppi", constants.PPI)
             
-            force_update_ppi(saved_ppi)
-            self.update_dimensions()
+            saved_w = s.get("window_width", 1000)
+            saved_h = s.get("window_height", 600)
+            self.screen = pygame.display.set_mode((saved_w, saved_h), pygame.RESIZABLE)
             
-            self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
+            # Now safe to call: menu, scoreboard, and gutter all exist
+            self.update_dimensions(saved_w, saved_h)
+            
+            self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
             self.scoreboard = Scoreboard()
             self.scoreboard.reset()
             self.gutter = Gutter(self.puck_size)
             self.input = InputHandler()
-            self.menu = Options(self.board_length_ft, self.puck_size)
-            
-            self.menu.ppi = saved_ppi
+
             self.menu.target_score = s.get("target_score", 21)
-            # UPDATED: Use new "edging" key, defaulting to True if missing (old save file)
             self.menu.edging_enabled = s.get("edging", True)
             self.menu.p1_color = s.get("p1_color_name", "Red")
             self.menu.p2_color = s.get("p2_color_name", "Blue")
@@ -122,54 +125,85 @@ class Shuffleboard:
                 self.gutter.add_puck(new_puck)
 
         else:
+            self.screen = pygame.display.set_mode((1000, 600), pygame.RESIZABLE)
             self.update_dimensions()
-            self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
-            self.scoreboard = Scoreboard()
-            self.gutter = Gutter(self.puck_size)
-            self.input = InputHandler()
-            self.menu = Options(self.board_length_ft, self.puck_size)
-            self.round_winner = P1 
+            self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
+            self.round_winner = P1
             self.throws_left = {P1: 4, P2: 4}
             self.game_over = False
             self.start_new_round()
 
-    def update_dimensions(self):
-        current_ppi = constants.PPI 
-        g_left = constants.GUTTER_PADDING_LEFT
-        g_right = constants.GUTTER_PADDING_RIGHT
-        g_y = constants.GUTTER_PADDING_Y
+    def update_dimensions(self, new_w=None, new_h=None):
+        if new_w and new_h:
+            self.screen_w, self.screen_h = new_w, new_h
+        else:
+            self.screen_w, self.screen_h = self.screen.get_size()
 
-        self.board_length_px = self.board_length_ft * 12 * current_ppi 
-        self.screen_w = int(g_left + self.board_length_px + g_right)
-        self.screen_h = int((REAL_BOARD_WIDTH * current_ppi) + (g_y * 2))
+        # Internal layout units in inches
+        board_in_w = self.board_length_ft * 12
+        scoreboard_in_w = 21.0      
         
-        self.screen = pygame.display.set_mode((self.screen_w, self.screen_h))
-        pygame.display.set_caption(f"Shuffleboard")
+        # Combined unit width: Gutter + Table + Gap + Scoreboard + Gutter
+        total_content_in_w = (constants.GUTTER_LEFT_IN + board_in_w + 
+                             constants.SCORE_GAP_IN + scoreboard_in_w + 
+                             constants.GUTTER_RIGHT_IN)
+        total_content_in_h = constants.REAL_BOARD_WIDTH + (constants.GUTTER_Y_IN * 2)
+
+        # Calculate Max PPI to fit the unit
+        new_ppi = min(self.screen_w / total_content_in_w, self.screen_h / total_content_in_h)
+        force_update_ppi(new_ppi)
+
+        # Horizontal centering offset for the entire unit
+        offset_x = (self.screen_w - (total_content_in_w * new_ppi)) / 2
+        offset_y = (self.screen_h - (total_content_in_h * new_ppi)) / 2
+
+        # Update Table and Gutter boundaries based on centering
+        constants.GUTTER_PADDING_LEFT = int((constants.GUTTER_LEFT_IN * new_ppi) + offset_x)
+        constants.GUTTER_PADDING_Y = int((constants.GUTTER_Y_IN * new_ppi) + offset_y)
         
+        scoreboard_area_px = (constants.SCORE_GAP_IN + scoreboard_in_w + 
+                              constants.GUTTER_RIGHT_IN) * new_ppi
+        constants.GUTTER_PADDING_RIGHT = int(scoreboard_area_px + offset_x)
+
+        self.board_length_px = board_in_w * new_ppi
         self.surface_rect = pygame.Rect(
-            g_left, g_y, 
-            self.board_length_px, REAL_BOARD_WIDTH * current_ppi
+            constants.GUTTER_PADDING_LEFT, 
+            constants.GUTTER_PADDING_Y, 
+            self.board_length_px, 
+            constants.REAL_BOARD_WIDTH * new_ppi
         )
+        
+        # Now call the method to update the UI icons and Table
+        self._update_ui_elements()
+        self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
+        self._update_all_pucks_visuals()
 
-        icon_dim = constants.ICON_SIZE_PX
-        self.icon_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
-        self.reset_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
-        self.puck_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
+    def _update_ui_elements(self):
+        # Set a fixed size that never changes (e.g., 2.5 inches at a standard 10 PPI)
+        STATIC_PPI = 10.0 
+        icon_dim = int(constants.ICON_SIZE_IN * STATIC_PPI)
         
+        # Use the static_dim for icon loading, NOT constants.ICON_SIZE_PX
         self.icons = {
-            'menu_grey': self.load_colored_icon(resource_path("menu-icon.png"), GREY, (icon_dim, icon_dim)),
-            'menu_white': self.load_colored_icon(resource_path("menu-icon.png"), WHITE, (icon_dim, icon_dim)),
-            'replay_grey': self.load_colored_icon(resource_path("replay-icon.png"), GREY, (icon_dim, icon_dim)),
-            'replay_white': self.load_colored_icon(resource_path("replay-icon.png"), WHITE, (icon_dim, icon_dim)),
-            'puck_grey': self.load_colored_icon(resource_path("puck_icon.png"), GREY, (icon_dim, icon_dim)),
-            'puck_white': self.load_colored_icon(resource_path("puck_icon.png"), WHITE, (icon_dim, icon_dim))
+            'menu_grey': self.load_colored_icon(resource_path("menu-icon.png"), constants.GREY, (icon_dim, icon_dim)),
+            'menu_white': self.load_colored_icon(resource_path("menu-icon.png"), constants.WHITE, (icon_dim, icon_dim)),
+            'replay_grey': self.load_colored_icon(resource_path("replay-icon.png"), constants.GREY, (icon_dim, icon_dim)),
+            'replay_white': self.load_colored_icon(resource_path("replay-icon.png"), constants.WHITE, (icon_dim, icon_dim)),
+            'puck_grey': self.load_colored_icon(resource_path("puck_icon.png"), constants.GREY, (icon_dim, icon_dim)),
+            'puck_white': self.load_colored_icon(resource_path("puck_icon.png"), constants.WHITE, (icon_dim, icon_dim))
         }
+
+        fixed_gap = 12 
+        margin = 15 
         
-        gap = int(1.25 * current_ppi)
+        self.icon_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
+        self.icon_rect.topright = (self.screen_w - margin, margin)
         
-        self.icon_rect.topright = (self.screen_w - int(1.8 * current_ppi), int(1.25 * current_ppi))
-        self.reset_btn_rect.topright = (self.icon_rect.left - gap, int(1.25 * current_ppi))
-        self.puck_btn_rect.topright = (self.reset_btn_rect.left - gap, int(1.25 * current_ppi))
+        self.reset_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
+        self.reset_btn_rect.topright = (self.icon_rect.left - fixed_gap, margin)
+        
+        self.puck_btn_rect = pygame.Rect(0, 0, icon_dim, icon_dim)
+        self.puck_btn_rect.topright = (self.reset_btn_rect.left - fixed_gap, margin)
 
     def load_colored_icon(self, filename, color, size):
         try:
@@ -224,7 +258,45 @@ class Shuffleboard:
             self.clock.tick(FPS)
         pygame.quit()
 
+    def apply_hard_constraints(self, w, h):
+        min_ppi = 7.0
+        board_in_w = self.board_length_ft * 12
+        scoreboard_in_w = 21.0
+        gap_in = constants.SCORE_GAP_IN
+        
+        total_in_w = (constants.GUTTER_LEFT_IN + board_in_w + 
+                    gap_in + scoreboard_in_w + constants.GUTTER_RIGHT_IN)
+        total_in_h = constants.REAL_BOARD_WIDTH + (constants.GUTTER_Y_IN * 2)
+        
+        min_w = int(total_in_w * min_ppi)
+        min_h = int(total_in_h * min_ppi) # Fixed variable name
+
+        if w < min_w or h < min_h:
+            w, h = max(w, min_w), max(h, min_h)
+            self.screen = pygame.display.set_mode((w, h), pygame.RESIZABLE)
+            
+        return w, h
+
     def handle_events(self, event):
+        if event.type == pygame.VIDEORESIZE:
+            # 1. Enforce the 7 PPI limit immediately
+            new_w, new_h = self.apply_hard_constraints(event.w, event.h)
+            
+            # 2. Update all internal PPI and centering math
+            self.update_dimensions(new_w, new_h)
+            
+            # 3. Refresh the table object
+            self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
+            
+            # 4. If in Menu, update its unique layout
+            if self.state == "MENU":
+                self.menu.update_layout(self.screen_w, self.screen_h)
+                
+            # 5. TRIGGER LIVE REDRAW: This is what stops the "stretching" look
+            self.draw()
+            pygame.display.flip()
+            return
+        
         if self.state == "MENU":
             result = self.menu.handle_event(event)
             
@@ -232,14 +304,14 @@ class Shuffleboard:
                 force_update_ppi(self.menu.ppi)
                 self.update_dimensions()
                 self.menu.update_layout(self.screen_w, self.screen_h) 
-                self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
+                self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
                 self._update_all_pucks_visuals()
 
             elif result == "SLIDER_UPDATE":
                 self.board_length_ft = int(self.menu.length)
                 self.update_dimensions()
                 self.menu.update_layout(self.screen_w, self.screen_h)
-                self.table = Table(self.screen_w, self.screen_h, self.surface_rect)
+                self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
                 self._update_all_pucks_visuals()
 
             elif result == "START":
@@ -284,14 +356,13 @@ class Shuffleboard:
             self.input.handle_input(event, self)
 
     def _update_all_pucks_visuals(self):
+        """Forces all pucks to recalculate their pixel radius based on the new PPI."""
         c1 = PUCK_COLORS[self.menu.p1_color]
         c2 = PUCK_COLORS[self.menu.p2_color]
         
         for p in self.gutter.pucks:
             color = c1 if p.owner == P1 else c2
-            p.update_visuals(self.menu.puck_size, color)
-            p.font_name = "couriernew"
-            p.text_color = BLACK
+            p.update_visuals(self.puck_size, color)
 
     def reset_game(self):
         self.scoreboard.reset()
@@ -421,8 +492,30 @@ class Shuffleboard:
                     if should_collide:
                         physics.check_puck_collision(p1, p2)
 
+            for puck in self.gutter.pucks:
+                # Calculate screen-relative bounds in inches
+                # Screen bounds relative to surface_rect (0,0)
+                min_x = -constants.GUTTER_PADDING_LEFT / constants.PPI
+                max_x = (self.screen_w - constants.GUTTER_PADDING_LEFT) / constants.PPI
+                min_y = -constants.GUTTER_PADDING_Y / constants.PPI
+                max_y = (self.screen_h - constants.GUTTER_PADDING_Y) / constants.PPI
+
+                # Clamp x and y based on radius to keep puck fully on screen
+                if puck.x_in < min_x + puck.radius_in:
+                    puck.x_in = min_x + puck.radius_in
+                    puck.dx = 0 # Optional: stop velocity if it hits the "window wall"
+                elif puck.x_in > max_x - puck.radius_in:
+                    puck.x_in = max_x - puck.radius_in
+                    puck.dx = 0
+
+                if puck.y_in < min_y + puck.radius_in:
+                    puck.y_in = min_y + puck.radius_in
+                    puck.dy = 0
+                elif puck.y_in > max_y - puck.radius_in:
+                    puck.y_in = max_y - puck.radius_in
+                    puck.dy = 0
+
             scoring_candidates = [p for p in all_pucks if self.table.is_touching_table(p)]
-            # UPDATED: Use new edging_enabled property name
             self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.edging_enabled, self.game_over)
 
             if self.game_state == "MOVING" and moving_count == 0: self.handle_turn_end()
@@ -469,7 +562,14 @@ class Shuffleboard:
         else:
             self.screen.fill(WOOD_DARK)
             c1, c2 = PUCK_COLORS[self.menu.p1_color], PUCK_COLORS[self.menu.p2_color]
-            self.scoreboard.draw(self.screen, self.screen_w, self.screen_h, self.throws_left, self.current_turn, c1, c2, self.game_state == "MOVING", self.game_over)
+            
+            self.scoreboard.draw(
+                self.screen, self.screen_w, self.screen_h, 
+                self.throws_left, self.current_turn, c1, c2, 
+                self.game_state == "MOVING", self.game_over,
+                self.board_length_px
+            )
+
             self.gutter.draw_gutter_layer(self.screen)
             shadow_offset = 4 
             shadow_surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)

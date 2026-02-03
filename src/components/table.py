@@ -7,13 +7,15 @@ from .. import physics
 from ..constants import WOOD_LIGHT, BLACK, \
                         THROW_LINE_FT, FOUL_LINE_FT, REAL_BOARD_WIDTH, \
                         STATE_GUTTER, STATE_SELECTED, STATE_READY, \
-                        STATE_THROWN, STATE_ON_BOARD, LINE_WIDTH, P1, P2
+                        STATE_THROWN, STATE_ON_BOARD, LINE_WIDTH, BLUE, RED
 
 class Table:
-    def __init__(self, screen_width, screen_height, surface_rect):
+    def __init__(self, screen_width, screen_height, surface_rect, board_length_ft):
         self.w = screen_width
         self.h = screen_height
         self.rect = surface_rect
+        self.board_length_ft = board_length_ft
+        
         scale = constants.PPI / 10.0
         self.font = pygame.font.SysFont("arial", int(32 * scale), bold=True)
 
@@ -54,9 +56,10 @@ class Table:
         line_3_x = right - (6 * ppi)   
         line_2_x = right - (12 * ppi)  
 
-        blue_line_color = (60, 100, 220)
-        self.draw_dashed_line(screen, blue_line_color, (throw_line_x, top), (throw_line_x, bottom), width=LINE_WIDTH)
-        pygame.draw.line(screen, (200, 50, 50), (foul_line_x, top), (foul_line_x, bottom), LINE_WIDTH)
+        if self.board_length_ft > 9:
+            self.draw_dashed_line(screen, BLUE, (throw_line_x, top), (throw_line_x, bottom), width=LINE_WIDTH)
+
+        pygame.draw.line(screen, RED, (foul_line_x, top), (foul_line_x, bottom), LINE_WIDTH)
         pygame.draw.line(screen, BLACK, (line_3_x, top), (line_3_x, bottom), LINE_WIDTH)
         pygame.draw.line(screen, BLACK, (line_2_x, top), (line_2_x, bottom), LINE_WIDTH)
 
