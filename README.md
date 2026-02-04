@@ -91,11 +91,11 @@ The digital scoreboard tracks game state in real-time.
 Click the icons in the top right corner to manage your game:
 * **Puck Icon:** Moves all non-scoring pucks back to the left side gutter.
 * **Replay Icon:** Starts a new game, resetting all pucks and the scoreboard.
-* **Menu Icon:** Opens the Options Screen (detailed below).
+* **Menu Icon:** Opens the options screen (detailed below).
 
 ![Options Screenshot](screenshots/options.gif)
 
-### Settings
+### Options
 * **Table Length:** Adjusts table length from 9 feet (default) to 22 feet.
 * **Puck Size:** Toggles between Medium (2 1/8") and Large (2 5/16").
    * *Defaults to Medium for tables <15ft, and Large for tables 15ft+.*
@@ -105,7 +105,7 @@ Click the icons in the top right corner to manage your game:
    * **RESUME:** Returns to the current game.
    * **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
 
-### Player Customization
+### Player Colors
 Use the color tables in the center to choose puck colors.
 * **Top Table:** Controls Scoreboard Left.
 * **Bottom Table:** Controls Scoreboard Right.
@@ -115,7 +115,7 @@ Use the color tables in the center to choose puck colors.
 ## Saving & Memory
 The game automatically saves your progress and preferences.
 
-> **⚠️ Warning:**
+> **Warning:**
 > If you force quit the app using `Command+Q` (Mac) or `Alt+F4` (Windows), the game may not save the current state. **Always close the window using the 'X' button to ensure your game is saved.**
 
 ### Managing Save Data
