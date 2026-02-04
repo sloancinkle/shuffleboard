@@ -64,8 +64,8 @@ class Shuffleboard:
             self.board_length_ft = s.get("length", DEFAULT_LENGTH_FT)
             self.puck_size = s.get("puck_size", DEFAULT_PUCK_SIZE)
             
-            saved_w = s.get("window_width", 1000)
-            saved_h = s.get("window_height", 600)
+            saved_w = s.get("window_width", (40 + 12 * self.board_length_ft) * constants.PPI)
+            saved_h = s.get("window_height", 28 * constants.PPI)
             self.screen = pygame.display.set_mode((saved_w, saved_h), pygame.RESIZABLE)
             
             # Now safe to call: menu, scoreboard, and gutter all exist
@@ -125,7 +125,9 @@ class Shuffleboard:
                 self.gutter.add_puck(new_puck)
 
         else:
-            self.screen = pygame.display.set_mode((1000, 600), pygame.RESIZABLE)
+            self.screen = pygame.display.set_mode(((40 + 12 * self.board_length_ft) * constants.PPI, 
+                                                   28 * constants.PPI), 
+                                                   pygame.RESIZABLE)
             self.update_dimensions()
             self.table = Table(self.screen_w, self.screen_h, self.surface_rect, self.board_length_ft)
             self.round_winner = P1
@@ -576,7 +578,7 @@ class Shuffleboard:
             shadow_surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
             shadow_surface.fill((0, 0, 0, 60)) 
             self.screen.blit(shadow_surface, (self.surface_rect.x + shadow_offset, self.surface_rect.y + shadow_offset))
-            
+
             self.table.draw(self.screen)
             
             self.gutter.draw_puck_shadows(self.screen, self.surface_rect, [STATE_SELECTED, STATE_READY, STATE_THROWN])
