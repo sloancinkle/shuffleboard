@@ -85,6 +85,8 @@ The digital scoreboard tracks the game state in real-time.
 ---
 
 ## Game Options & Settings
+As window boundaries are adjusted, the game maximizes PPI (pixels per inch) and fills borders with extra gutter space.
+
 Click the Puck Icon on the top right corner to move all non-scoring pucks back to the left side gutter.
 
 Click the Replay Icon on the top right corner to start a new game, resetting all pucks and the scoreboard.
@@ -94,7 +96,6 @@ Click the Menu Icon on the top right corner to open the Options Screen.
 ![Options Screenshot](screenshots/options.gif)
 
 ### Table Settings
-* Game Size: Increases or decreases the PPI (pixels per inch) from 7 (default) to 18.
 * Table Length: Adjusts the length of the table from 9 feet (default) to 22 feet.
 * Puck Size: Toggles between medium pucks (2 1/8 inches) and large pucks (2 5/16 inches).
    * The default is medium pucks for tables less than 15 feet and large pucks for tables 15 feet and over.
