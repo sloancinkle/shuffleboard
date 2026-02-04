@@ -115,8 +115,7 @@ Use the color tables in the center to choose puck colors.
 ## Saving & Memory
 The game automatically saves your progress and preferences.
 
-> **Warning:**
-> If you force quit the app using `Command+Q` (Mac) or `Alt+F4` (Windows), the game may not save the current state. **Always close the window using the 'X' button to ensure your game is saved.**
+**Warning:** If you force quit the app using `Command+Q` (Mac) or `Alt+F4` (Windows), the game may not save the current state. **Always close the window using the 'X' button to ensure your game is saved.**
 
 ### Managing Save Data
 The save file (`memory.json`) is located in your computer's application data folder.
