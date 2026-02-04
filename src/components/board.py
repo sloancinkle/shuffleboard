@@ -1,7 +1,6 @@
 import pygame
 import random
 import math
-from .puck import Puck
 from .. import constants
 from .. import physics 
 from ..constants import WOOD_LIGHT, BLACK, \
@@ -43,6 +42,7 @@ class Table:
 
     def draw(self, screen):
         pygame.draw.rect(screen, WOOD_LIGHT, self.rect)
+        
         right = self.rect.right
         left = self.rect.left
         top = self.rect.top

@@ -10,7 +10,7 @@ from .input import InputHandler
 
 from .components.options import Options
 from .components.scoreboard import Scoreboard
-from .components.table import Table, Gutter
+from .components.board import Table, Gutter
 from .components.puck import Puck 
 
 from .constants import REAL_BOARD_WIDTH, FPS, WOOD_DARK, BLACK, \
@@ -571,10 +571,12 @@ class Shuffleboard:
             )
 
             self.gutter.draw_gutter_layer(self.screen)
+
             shadow_offset = 4 
             shadow_surface = pygame.Surface((self.surface_rect.width, self.surface_rect.height), pygame.SRCALPHA)
             shadow_surface.fill((0, 0, 0, 60)) 
             self.screen.blit(shadow_surface, (self.surface_rect.x + shadow_offset, self.surface_rect.y + shadow_offset))
+            
             self.table.draw(self.screen)
             
             self.gutter.draw_puck_shadows(self.screen, self.surface_rect, [STATE_SELECTED, STATE_READY, STATE_THROWN])
