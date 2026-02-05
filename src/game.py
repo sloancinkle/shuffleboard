@@ -241,7 +241,7 @@ class Shuffleboard:
             self.gutter.add_puck(p_sec)
             self.gutter.add_puck(p_fir)
             
-        self.gutter.scatter_pucks(self.screen_h)
+        self.gutter.scatter_pucks(self.screen_w, self.screen_h, self.board_length_ft)
         self.current_turn = self.round_winner
         self.state_timer = 0
         self.input.reset()
@@ -380,7 +380,7 @@ class Shuffleboard:
                 p.is_moving = False
                 p.is_selected = False
             self.input.selected_puck = None
-            self.gutter.scatter_pucks(self.screen_h)
+            self.gutter.scatter_pucks(self.screen_w, self.screen_h, self.board_length_ft)
         else:
             active_pucks = []
             reset_candidates = []
@@ -393,7 +393,7 @@ class Shuffleboard:
                     p.is_moving = False
                     reset_candidates.append(p)
             self.gutter.pucks = reset_candidates
-            self.gutter.scatter_pucks(self.screen_h)
+            self.gutter.scatter_pucks(self.screen_w, self.screen_h, self.board_length_ft)
             self.gutter.pucks.extend(active_pucks)
 
     def shoot_puck(self, puck, dx, dy, count_throw=True):

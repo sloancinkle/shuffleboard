@@ -95,10 +95,10 @@ class Gutter:
         if puck not in self.pucks:
             self.pucks.append(puck)
 
-    def scatter_pucks(self, screen_h):
+    def scatter_pucks(self, screen_w, screen_h, table_ft):
         placed_positions = []
         for puck in self.pucks:
-            self._place_puck_safe(puck, screen_h, placed_positions)
+            self._place_puck_safe(puck, screen_w, screen_h, table_ft, placed_positions)
             px = int(constants.GUTTER_PADDING_LEFT + (puck.x_in * constants.PPI))
             py = int(constants.GUTTER_PADDING_Y + (puck.y_in * constants.PPI))
             placed_positions.append(pygame.math.Vector2(px, py))
@@ -159,12 +159,12 @@ class Gutter:
             attempts += 1
         puck.set_pos(final_x, final_y)
 
-    def _place_puck_safe(self, puck, screen_h, existing_positions):
+    def _place_puck_safe(self, puck, screen_w, screen_h, table_ft, existing_positions):
         g_left = constants.GUTTER_PADDING_LEFT
         g_y = constants.GUTTER_PADDING_Y
         ppi = constants.PPI
 
-        min_x = 10 
+        min_x = int((screen_w - (40 + 12 * table_ft) * constants.PPI) / 2)
         max_x = g_left - puck.radius_px - 4
         min_y = g_y
         max_y = screen_h - g_y
