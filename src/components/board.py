@@ -164,7 +164,7 @@ class Gutter:
         g_y = constants.GUTTER_PADDING_Y
         ppi = constants.PPI
 
-        min_x = int((screen_w - (40 + 12 * table_ft) * constants.PPI) / 2)
+        min_x = (screen_w - (40 + 12 * table_ft) * ppi) // 2
         max_x = g_left - puck.radius_px - 4
         min_y = g_y
         max_y = screen_h - g_y
