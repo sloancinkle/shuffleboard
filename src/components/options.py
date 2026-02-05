@@ -50,36 +50,28 @@ class Options:
         self.dragging_slider = False
         self.selected_puck = None 
         self.throw_history = []
-        
-        # FLAGS FOR ONE-TIME RANDOMIZATION
-        self.first_init_done = False
-        self.pending_first_scatter = False
 
         # Calculate initial layout but don't spawn pucks yet
         self.update_layout(self.screen_w, self.screen_h)
 
     def set_initials(self, length, puck_size, target_score):
-        # 1. Update the actual active values so the slider/buttons move
+        # 1. Update the actual active values
         self.length = length
         self.puck_size = puck_size
         self.target_score = target_score
         
-        # 2. Update the 'original' values so the Resume/Reset button knows if you changed something
+        # 2. Update the 'original' values
         self.orig_length = length
         self.orig_puck_size = puck_size
         self.orig_edging = self.edging_enabled
         self.orig_target = target_score
         
-        # 3. Update internal trackers for layout and physics
+        # 3. Update internal trackers
         self.last_length = int(length)
         self.last_int_length = int(length)
         
-        # Ensure layout is mapped to these new values before we check for scattering
         self.update_layout(self.screen_w, self.screen_h)
-        
-        if not self.first_init_done:
-            self.pending_first_scatter = True
-            # The actual scatter happens at the end of update_layout
+        self.refresh_puck_positions()
         
     def refresh_puck_positions(self):
         self.menu_pucks_p1 = self._create_puck_set(P1, exclude_color=self.p2_color)
@@ -201,19 +193,15 @@ class Options:
         
         # Resume Col: Button
         self.start_btn_rect = pygame.Rect(res_x, res_start_y, res_w, btn_h)
-        
-        if self.pending_first_scatter and self.p1_area_rect.width > 10:
-            self.refresh_puck_positions()
-            self.pending_first_scatter = False
-            self.first_init_done = True
 
         # --- UPDATE EXISTING PUCK VISUALS ---
         for p in self.menu_pucks:
             p.update_visuals(self.puck_size, constants.PUCK_COLORS[p.color_name])
             
         # Keep them confined during resizing
-        self._confine_pucks(self.menu_pucks_p1, self.p1_area_rect)
-        self._confine_pucks(self.menu_pucks_p2, self.p2_area_rect)
+        for _ in range(10): 
+            self._confine_pucks(self.menu_pucks_p1, self.p1_area_rect)
+            self._confine_pucks(self.menu_pucks_p2, self.p2_area_rect)
 
     def _resize_window_to_fit(self):
         """Calculates total width based on specification and resizes window."""
@@ -321,8 +309,10 @@ class Options:
         self.length = self.min_len + (ratio * (self.max_len - self.min_len))
         
         # Puck size logic
-        if self.length >= 15: self.puck_size = constants.PUCK_LARGE
-        else: self.puck_size = constants.PUCK_MEDIUM
+        if self.last_length < 15 and int(self.length) >= 15: 
+            self.puck_size = constants.PUCK_LARGE
+        elif self.last_length > 14 and int(self.length) <= 14: 
+            self.puck_size = constants.PUCK_MEDIUM
         
         # Check for Integer Change
         if int(self.length) != self.last_length:

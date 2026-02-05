@@ -345,8 +345,8 @@ class Shuffleboard:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.icon_rect.collidepoint(event.pos):
                     self.state = "MENU"
-                    self.menu.set_initials(self.board_length_ft, self.puck_size, self.menu.target_score)
                     self.menu.update_layout(self.screen_w, self.screen_h)
+                    self.menu.set_initials(self.board_length_ft, self.puck_size, self.menu.target_score)
                     return
                 if self.reset_btn_rect.collidepoint(event.pos):
                     self.reset_game()
@@ -419,6 +419,7 @@ class Shuffleboard:
             self.gutter.free_play = self.game_over
             self.input.update_hover(self)
             
+            # --- PRE-CALCULATIONS ---
             current_ppi = constants.PPI 
             g_left_px = constants.GUTTER_PADDING_LEFT
             g_y_px = constants.GUTTER_PADDING_Y
@@ -432,28 +433,24 @@ class Shuffleboard:
             throw_line_in = THROW_LINE_FT * 12
             
             all_pucks = self.gutter.pucks
-            moving_count = 0
             
-            for puck in all_pucks:
-                if self.game_over:
-                     if puck.state == STATE_READY:
-                         puck.state = STATE_ON_BOARD
-                     if puck.state == STATE_THROWN and not puck.is_moving:
-                         puck.state = STATE_ON_BOARD
-
-                if puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]:
-                    if not self.table.is_puck_stable(puck): puck.state = STATE_GUTTER
-                
-                if puck.is_moving:
+            # --- SUB-STEPPING LOOP (The Fix for Tunneling) ---
+            # We break the frame into 8 small movement steps.
+            # This ensures fast pucks can't "skip" over other pucks.
+            SUB_STEPS = 8 
+            
+            for _ in range(SUB_STEPS):
+                # 1. Move every puck a tiny amount
+                for puck in all_pucks:
+                    # Update State Checks (Keep your existing logic)
                     if self.game_over:
-                        on_wood = self.table.is_touching_table(puck)
-                        fric = TABLE_FRICTION if on_wood else GUTTER_FRICTION
-                    else:
-                        fric = TABLE_FRICTION if (puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]) else GUTTER_FRICTION
+                        if puck.state == STATE_READY: puck.state = STATE_ON_BOARD
+                        if puck.state == STATE_THROWN and not puck.is_moving: puck.state = STATE_ON_BOARD
 
-                    is_still_moving = physics.update_puck_movement(puck, fric)
-                    
-                    if is_still_moving:
+                    physics.move_puck_substep(puck, SUB_STEPS)
+
+                    # 2. Bounce off walls immediately after moving a tiny bit
+                    if puck.is_moving:
                         physics.resolve_boundary_bounce(puck, b_min_x, b_max_x, b_min_y, b_max_y)
 
                         if puck.state == STATE_GUTTER:
@@ -461,62 +458,71 @@ class Shuffleboard:
                         elif puck.state in (STATE_READY, STATE_SELECTED):
                              if not self.game_over:
                                 self.gutter.resolve_rect_obstacle(puck, throw_line_in, board_len_in, 0, REAL_BOARD_WIDTH)
+                
+                # 3. Check Collisions immediately after the tiny move
+                for i in range(len(all_pucks)):
+                    p1 = all_pucks[i]
+                    for j in range(i+1, len(all_pucks)):
+                        p2 = all_pucks[j]
+                        
+                        should_collide = False
+                        if p1.state == STATE_GUTTER and p2.state == STATE_GUTTER:
+                            should_collide = True
+                        elif self.game_over:
+                            if p1.state != STATE_GUTTER and p2.state != STATE_GUTTER:
+                                should_collide = True
+                        else:
+                            valid_states = [STATE_THROWN, STATE_ON_BOARD, STATE_READY, STATE_SELECTED]
+                            if p1.state in valid_states and p2.state in valid_states:
+                                 if p1.state == STATE_SELECTED and p2.state == STATE_ON_BOARD: pass
+                                 elif p2.state == STATE_SELECTED and p1.state == STATE_ON_BOARD: pass
+                                 else: should_collide = True
+                        
+                        if should_collide:
+                            physics.check_puck_collision(p1, p2)
 
+            # --- END OF FRAME: Apply Friction & Cleanup ---
+            moving_count = 0
+            for puck in all_pucks:
+                # Stability Check
+                if puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]:
+                    if not self.table.is_puck_stable(puck): puck.state = STATE_GUTTER
+                
+                # Friction Application (Once per frame!)
+                if puck.is_moving:
+                    if self.game_over:
+                        on_wood = self.table.is_touching_table(puck)
+                        fric = TABLE_FRICTION if on_wood else GUTTER_FRICTION
+                    else:
+                        fric = TABLE_FRICTION if (puck.state in [STATE_THROWN, STATE_ON_BOARD, STATE_READY]) else GUTTER_FRICTION
+                    
+                    # Apply the friction now that movement is done
+                    physics.apply_friction(puck, fric)
+                    
                     if puck.state in (STATE_THROWN, STATE_ON_BOARD): moving_count += 1
-
+                
+                # Gutter Resolve (Safety check at end of frame)
                 if puck.state == STATE_GUTTER:
                     self.gutter.resolve_rect_obstacle(puck, 0, board_len_in, 0, REAL_BOARD_WIDTH)
 
-            for i in range(len(all_pucks)):
-                p1 = all_pucks[i]
-                for j in range(i+1, len(all_pucks)):
-                    p2 = all_pucks[j]
-                    
-                    should_collide = False
-                    
-                    if p1.state == STATE_GUTTER and p2.state == STATE_GUTTER:
-                        should_collide = True
-                    
-                    elif self.game_over:
-                        s1_on_table = p1.state != STATE_GUTTER
-                        s2_on_table = p2.state != STATE_GUTTER
-                        
-                        if s1_on_table and s2_on_table:
-                             should_collide = True
-
-                    else:
-                        valid_states = [STATE_THROWN, STATE_ON_BOARD, STATE_READY, STATE_SELECTED]
-                        if p1.state in valid_states and p2.state in valid_states:
-                             if p1.state == STATE_SELECTED and p2.state == STATE_ON_BOARD: pass
-                             elif p2.state == STATE_SELECTED and p1.state == STATE_ON_BOARD: pass
-                             else: should_collide = True
-                    
-                    if should_collide:
-                        physics.check_puck_collision(p1, p2)
-
+            # --- SCREEN CLAMPING (Keep your existing clamping) ---
             for puck in self.gutter.pucks:
-                # Calculate screen-relative bounds in inches
-                # Screen bounds relative to surface_rect (0,0)
                 min_x = -constants.GUTTER_PADDING_LEFT / constants.PPI
                 max_x = (self.screen_w - constants.GUTTER_PADDING_LEFT) / constants.PPI
                 min_y = -constants.GUTTER_PADDING_Y / constants.PPI
                 max_y = (self.screen_h - constants.GUTTER_PADDING_Y) / constants.PPI
 
-                # Clamp x and y based on radius to keep puck fully on screen
                 if puck.x_in < min_x + puck.radius_in:
-                    puck.x_in = min_x + puck.radius_in
-                    puck.dx = 0 # Optional: stop velocity if it hits the "window wall"
+                    puck.x_in = min_x + puck.radius_in; puck.dx = 0
                 elif puck.x_in > max_x - puck.radius_in:
-                    puck.x_in = max_x - puck.radius_in
-                    puck.dx = 0
+                    puck.x_in = max_x - puck.radius_in; puck.dx = 0
 
                 if puck.y_in < min_y + puck.radius_in:
-                    puck.y_in = min_y + puck.radius_in
-                    puck.dy = 0
+                    puck.y_in = min_y + puck.radius_in; puck.dy = 0
                 elif puck.y_in > max_y - puck.radius_in:
-                    puck.y_in = max_y - puck.radius_in
-                    puck.dy = 0
+                    puck.y_in = max_y - puck.radius_in; puck.dy = 0
 
+            # --- SCORING & TURN LOGIC ---
             scoring_candidates = [p for p in all_pucks if self.table.is_touching_table(p)]
             self.scoreboard.calculate_points(scoring_candidates, self.board_length_ft, self.menu.edging_enabled, self.game_over)
 

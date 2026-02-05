@@ -1,14 +1,23 @@
 import math
+import random
 from .constants import MIN_SPEED, STATE_SELECTED, STATE_ON_BOARD, STATE_THROWN
 
-def update_puck_movement(puck, friction):
+def move_puck_substep(puck, steps):
     """
-    Updates position based on velocity and applies friction.
-    Returns True if the puck is still moving, False otherwise.
+    Moves the puck a fraction of its velocity. 
+    We call this multiple times per frame (e.g., 8 times).
     """
     if puck.is_moving:
-        puck.x_in += puck.dx
-        puck.y_in += puck.dy
+        # Move only 1/8th of the distance
+        puck.x_in += puck.dx / steps
+        puck.y_in += puck.dy / steps
+
+def apply_friction(puck, friction):
+    """
+    Applies friction / braking.
+    We call this ONLY ONCE per frame at the end.
+    """
+    if puck.is_moving:
         puck.dx *= friction
         puck.dy *= friction
         
@@ -59,18 +68,15 @@ def resolve_rect_container(puck, min_x, max_x, min_y, max_y):
         puck.dy *= bounce
 
 def check_puck_collision(p1, p2):
-    """
-    Detects and resolves collision between two pucks using elastic collision logic.
-    Also handles 'kick' logic if one puck is being held (SELECTED).
-    """
     dx = p1.x_in - p2.x_in
     dy = p1.y_in - p2.y_in
     dist = math.hypot(dx, dy)
     min_dist = p1.radius_in + p2.radius_in
     
     if dist < min_dist:
+        # 1. Improved Angle Calculation
         if dist == 0: 
-            angle = 0
+            angle = random.uniform(0, 2 * math.pi)
             dist = 0.001
         else:
             angle = math.atan2(dy, dx)
@@ -82,43 +88,47 @@ def check_puck_collision(p1, p2):
         if p1.state == STATE_SELECTED:
             _apply_kick(p2, nx, ny, overlap, invert=True)
             return
-
         if p2.state == STATE_SELECTED:
             _apply_kick(p1, nx, ny, overlap, invert=False)
             return
 
-        # Standard Elastic Collision
-        move_x = nx * (overlap / 2)
-        move_y = ny * (overlap / 2)
-        p1.x_in += move_x
-        p1.y_in += move_y
-        p2.x_in -= move_x
-        p2.y_in -= move_y
-        
-        rx = p1.dx - p2.dx
-        ry = p1.dy - p2.dy
-        vel_along_normal = (rx * nx) + (ry * ny)
+        # 2. Relative Velocity along the normal
+        # This is the 'Closing Velocity'
+        rvx = p1.dx - p2.dx
+        rvy = p1.dy - p2.dy
+        vel_along_normal = (rvx * nx) + (rvy * ny)
 
-        if vel_along_normal > 0: 
+        # IMPORTANT: Only resolve if pucks are moving TOWARD each other
+        # If they are already moving apart, don't apply another bounce
+        if vel_along_normal > 0:
             return
 
-        restitution = 0.9
+        # 3. Position Correction (Anti-clumping)
+        # We use a 'slop' and 'percent' to prevent jitter
+        percent = 0.8 # how much of the overlap to fix
+        slop = 0.01   # allow a tiny bit of overlap to prevent oscillation
+        correction = (max(overlap - slop, 0) / 2) * percent
+        
+        p1.x_in += nx * correction
+        p1.y_in += ny * correction
+        p2.x_in -= nx * correction
+        p2.y_in -= ny * correction
+
+        # 4. Impulse Resolution (The "Crunch")
+        # Increase restitution for a more "bouncy" arcade feel
+        restitution = 0.8 
         j = -(1 + restitution) * vel_along_normal
-        j /= 2 
+        j /= 2 # Assuming equal mass
         
-        ix = j * nx
-        iy = j * ny
+        # Apply the impulse
+        p1.dx += j * nx
+        p1.dy += j * ny
+        p2.dx -= j * nx
+        p2.dy -= j * ny
         
-        p1.dx += ix
-        p1.dy += iy
-        p2.dx -= ix
-        p2.dy -= iy
-        
+        # Wake up both pucks
         p1.is_moving = True
         p2.is_moving = True
-        
-        if p1.state == STATE_ON_BOARD: p1.state = STATE_THROWN
-        if p2.state == STATE_ON_BOARD: p2.state = STATE_THROWN
 
 def _apply_kick(puck, nx, ny, overlap, invert=False):
     direction = -1 if invert else 1
