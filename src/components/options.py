@@ -420,18 +420,37 @@ class Options:
         p1_cons = get_constraints(self.p1_area_rect)
         p2_cons = get_constraints(self.p2_area_rect)
 
+        # --- SUB-STEPPING LOOP ---
+        # We break the movement into 8 small steps per frame
+        SUB_STEPS = 8
+        
+        for _ in range(SUB_STEPS):
+            # 1. Move and Constrain every puck slightly
+            for p in self.menu_pucks:
+                if p == self.selected_puck: continue
+                
+                # Move a tiny bit (1/8th of velocity)
+                physics.move_puck_substep(p, SUB_STEPS)
+                
+                # Immediately fix bounds if it went out
+                constraints = p1_cons if p.menu_group == P1 else p2_cons
+                physics.resolve_rect_container(p, *constraints)
+            
+            # 2. Check for collisions immediately after the tiny move
+            for i in range(len(self.menu_pucks)):
+                p1 = self.menu_pucks[i]
+                for j in range(i + 1, len(self.menu_pucks)):
+                    p2 = self.menu_pucks[j]
+                    
+                    # Only collide if they are in the same box (same player group)
+                    if p1.menu_group == p2.menu_group:
+                        physics.check_puck_collision(p1, p2)
+
+        # --- FINAL PASS: FRICTION ---
+        # Apply friction only ONCE per frame
         for p in self.menu_pucks:
             if p == self.selected_puck: continue
-            physics.update_puck_movement(p, TABLE_FRICTION)
-            constraints = p1_cons if p.menu_group == P1 else p2_cons
-            physics.resolve_rect_container(p, *constraints)
-        
-        for i in range(len(self.menu_pucks)):
-            p1 = self.menu_pucks[i]
-            for j in range(i + 1, len(self.menu_pucks)):
-                p2 = self.menu_pucks[j]
-                if p1.menu_group == p2.menu_group:
-                    physics.check_puck_collision(p1, p2)
+            physics.apply_friction(p, TABLE_FRICTION)
 
     def update_fonts(self):
         scale = constants.PPI / 10.0
