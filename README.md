@@ -106,7 +106,9 @@ Click the icons in the top right corner to manage your game:
    * **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
 
 ### Player Colors
-Use the color tables in the center to choose puck colors. The top table controls scoreboard left, and the bottom table controls scoreboard right. 
+Use the color tables in the center to choose puck colors. 
+* The top table controls scoreboard left.
+* The bottom table controls scoreboard right. 
 
 ---
 
