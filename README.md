@@ -97,10 +97,10 @@ Click the icons in the top right corner to manage your game:
 
 ### Options
 * **Table Length:** Adjusts table length from 9 feet (default) to 22 feet.
-* **Puck Size:** Toggles between Medium (2 1/8") and Large (2 5/16").
-   * *Defaults to Medium for tables <15ft, and Large for tables 15ft+.*
+* **Puck Size:** Toggles between medium pucks (2 1/8") and large pucks (2 5/16").
+   * *Defaults to medium for tables under 15 feet, and large for tables over 14 feet.
 * **Score Goal:** Toggles winning score between 21 and 15 points.
-* **Edge Points:** Toggles "hanger" scoring between 4 points and 3 points.
+* **Edge Points:** Toggles scoring for pucks hanging off the back edge between 4 points and 3 points.
 * **Resume vs. Reset:**
    * **RESUME:** Returns to the current game.
    * **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
