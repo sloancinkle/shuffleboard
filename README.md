@@ -110,7 +110,7 @@ Use the color tables in the center to choose puck colors.
 
 ### Resume vs. Reset:
 * **RESUME:** Returns to the current game.
-* **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
+* **RESET:** If any setting that affects gameplay is changed, the button starts a new game.
 
 ---
 
