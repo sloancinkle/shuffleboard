@@ -101,14 +101,16 @@ Click the icons in the top right corner to manage your game:
    * *Defaults to medium for tables under 15 feet, and large for tables over 14 feet.
 * **Score Goal:** Toggles winning score between 21 and 15 points.
 * **Edge Points:** Toggles scoring for pucks hanging off the back edge between 4 points and 3 points.
-* **Resume vs. Reset:**
-   * **RESUME:** Returns to the current game.
-   * **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
 
 ### Player Colors
 Use the color tables in the center to choose puck colors. 
 * The top table controls scoreboard left.
-* The bottom table controls scoreboard right. 
+* The bottom table controls scoreboard right.
+
+
+### Resume vs. Reset:
+* **RESUME:** Returns to the current game.
+* **RESET:** If you changed a setting that affects gameplay, this button appears to start a fresh game.
 
 ---
 
